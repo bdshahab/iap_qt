@@ -1,15 +1,10 @@
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-                            QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-                           QFont, QFontDatabase, QGradient, QIcon,
-                           QImage, QKeySequence, QLinearGradient, QPainter,
-                           QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLayout, QLabel,
-                               QPushButton, QSizePolicy, QVBoxLayout, QWidget)
-from tools.for_images import show_image
+from PySide6.QtCore import (QCoreApplication, QMetaObject)
+from PySide6.QtGui import (QIcon)
+from PySide6.QtWidgets import (QDialog, QHBoxLayout, QLayout, QPushButton, QSizePolicy, QVBoxLayout)
+
 from Global import img_size
 from tools.Centralization import center_window
+from tools.for_images import show_image
 
 
 class Ui_About(QDialog):
