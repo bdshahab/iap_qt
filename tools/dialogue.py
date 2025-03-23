@@ -1,14 +1,12 @@
-from PySide6.QtWidgets import QMessageBox
-from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication
 
 
-def show_the_message(title, message, icon_type):
-    msg = QMessageBox()
-    msg.setWindowTitle(title)
-    msg.setText(message)
-    msg.setIcon(icon_type)
-    msg.setWindowIcon(QIcon("About/Photos/icon.png"))
-    msg.setStandardButtons(QMessageBox.Ok)
-    msg.setDefaultButton(QMessageBox.Ok)
-
-    _ = msg.exec()
+def center_window(window):
+    # set window in the center
+    from PySide6.QtGui import QScreen
+    screen_geometry = QScreen.availableGeometry(
+        QApplication.primaryScreen())
+    screen_center = screen_geometry.center()
+    geo = window.frameGeometry()
+    geo.moveCenter(screen_center)
+    window.move(geo.topLeft())
