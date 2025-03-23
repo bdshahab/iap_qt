@@ -1,19 +1,15 @@
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-                            QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
-                           QCursor, QFont, QFontDatabase, QGradient,
-                           QIcon, QImage, QKeySequence, QLinearGradient,
-                           QPainter, QPalette, QPixmap, QRadialGradient,
-                           QTransform)
+import sys
+
+from PySide6.QtCore import (QCoreApplication, QMetaObject)
+from PySide6.QtCore import QEvent
+from PySide6.QtGui import (QAction, QIcon)
 from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QSizePolicy,
                                QVBoxLayout, QWidget, QMessageBox)
-import sys
+
 import Global
 from tools.Centralization import center_window
 from tools.dialogue import show_the_message
 from tools.iap_variables import *
-from PySide6.QtCore import QEvent
 
 
 class Ui_MainWindow(QMainWindow):
