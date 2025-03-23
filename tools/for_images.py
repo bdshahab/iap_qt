@@ -1,11 +1,6 @@
-from PySide6.QtGui import (QIcon, QPixmap)
-from PySide6.QtWidgets import (QLabel, QPushButton)
-from PySide6.QtCore import (QSize, Qt)
-
-
-from PySide6.QtGui import QIcon, QPixmap, QImage
-from PySide6.QtWidgets import QLabel, QPushButton
 from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtWidgets import QLabel, QPushButton
 
 
 def show_image(image_label_list, image_path_list, image_size_list, flip_modes=None):
