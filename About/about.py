@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (QDialog, QHBoxLayout, QLayout, QPushButton, QSize
 from Global import img_size
 from tools.Centralization import center_window
 from tools.for_images import show_image
+import webbrowser
 
 
 class Ui_About(QDialog):
@@ -496,9 +497,55 @@ class Ui_About(QDialog):
         self.resize(800, 400)
         center_window(self)
         self.ok.clicked.connect(self.close_window)
+        self.logo.clicked.connect(lambda : self.open_url("https://duckduckgo.com/?q=bdshahab+IAP+by+Cryptocurrency"))
+        self.license.clicked.connect(lambda : self.open_url("https://creativecommons.org/licenses/by/4.0"))
+        self.b_1.clicked.connect(lambda : self.open_url("https://bdshahab.blogspot.com"))
+        self.b_2.clicked.connect(lambda : self.open_url("https://bsky.app/profile/bdshahab.bsky.social"))
+        self.b_3.clicked.connect(lambda : self.open_url("https://www.chess.com/member/bdshahab1982"))
+        self.b_4.clicked.connect(lambda : self.open_url("https://app.clouthub.com/#/users/u/bdshahab"))
+        self.b_5.clicked.connect(lambda : self.open_url("https://diamondapp.com/u/bdshahab"))
+        self.b_6.clicked.connect(lambda : self.open_url("https://diasp.org/u/bdshahab"))
+        self.b_7.clicked.connect(lambda : self.open_url("https://discord.gg/xgMdTXBhnE"))
+        self.b_8.clicked.connect(lambda : self.open_url("https://www.facebook.com/shahab.baradaran.dilmaghani"))
+        self.b_9.clicked.connect(lambda : self.open_url("https://www.flickr.com/photos/bdshahab"))
+        self.b_10.clicked.connect(lambda : self.open_url("https://flipboard.com/@bdshahab1982"))
+        self.b_11.clicked.connect(lambda : self.open_url("https://gab.com/bdshahab"))
+        self.b_12.clicked.connect(lambda : self.open_url("https://gettr.com/user/bdshahab"))
+        self.b_13.clicked.connect(lambda : self.open_url("https://www.instagram.com/bdshahab1982"))
+        self.b_14.clicked.connect(lambda : self.open_url("https://bdshahab.itch.io"))
+        self.b_15.clicked.connect(lambda : self.open_url("https://justpaste.it/u/bdshahab"))
+        self.b_16.clicked.connect(lambda : self.open_url("https://lichess.org/@/bdshahab"))
+        self.b_17.clicked.connect(lambda : self.open_url("https://www.linkedin.com/company/bdshahab"))
+        self.b_18.clicked.connect(lambda : self.open_url("https://bdshahab1982.livejournal.com"))
+        self.b_19.clicked.connect(lambda : self.open_url("https://mastodon.social/@bdshahab"))
+        self.b_20.clicked.connect(lambda : self.open_url("https://matrix.to/#/#bdshahab:matrix.org"))
+        self.b_21.clicked.connect(lambda : self.open_url("https://bdshahab.medium.com"))
+        self.b_22.clicked.connect(lambda : self.open_url("https://mewe.com/bdshahab"))
+        self.b_23.clicked.connect(lambda : self.open_url("https://www.minds.com/bdshahab"))
+        self.b_24.clicked.connect(lambda : self.open_url("https://odysee.com/@bdshahab"))
+        self.b_25.clicked.connect(lambda : self.open_url("https://www.pinterest.com/bdshahab"))
+        self.b_26.clicked.connect(lambda : self.open_url("https://primal.net/p/npub1lu5m9cjqnyaqay0uc77t526qjtkx5qu8qxe8l2kqrflmagac3c8q7g8nu5"))
+        self.b_27.clicked.connect(lambda : self.open_url("https://www.reddit.com/user/bdshahab"))
+        self.b_28.clicked.connect(lambda : self.open_url("https://rumble.com/c/c-1832445/videos"))
+        self.b_29.clicked.connect(lambda : self.open_url("https://spoutible.com/bdshahab"))
+        self.b_30.clicked.connect(lambda : self.open_url("https://steemit.com/@bdshahab"))
+        self.b_31.clicked.connect(lambda : self.open_url("https://t.me/bd_shahab"))
+        self.b_32.clicked.connect(lambda : self.open_url("https://the-dots.com/users/shahab-baradaran-dilmaghani-1291359"))
+        self.b_33.clicked.connect(lambda : self.open_url("https://www.threads.net/@bdshahab1982"))
+        self.b_34.clicked.connect(lambda : self.open_url("https://www.tiktok.com/@bdshahab"))
+        self.b_35.clicked.connect(lambda : self.open_url("https://bdshahab.tumblr.com"))
+        self.b_36.clicked.connect(lambda : self.open_url("https://vk.com/bdshahab"))
+        self.b_37.clicked.connect(lambda : self.open_url("https://bdsh.wordpress.com"))
+        self.b_38.clicked.connect(lambda : self.open_url("https://x.com/bdshahab"))
+        self.b_39.clicked.connect(lambda : self.open_url("https://www.xing.com/profile/Shahab_BaradaranDilmaghani"))
+        self.b_40.clicked.connect(lambda : self.open_url("https://www.youtube.com/@bdshahab"))
+
+    def open_url(self, url_address):
+        webbrowser.open(url_address)
 
     def set_images(self):
         ico_size = img_size - img_size // 3
+
         show_image([self.logo],
                    [r"About\Photos\icon.png"],
                    [(ico_size, ico_size)])
