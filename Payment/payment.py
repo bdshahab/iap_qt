@@ -21,6 +21,10 @@ last_date_now = ""
 class Ui_Payment(QDialog):
     def __init__(self):
         super().__init__()
+        self.elapsed_timer = None
+        self.timer = None
+        self.msg = None
+        self.base_time = None
         self.setStyleSheet(u"")
         self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.setObjectName(u"verticalLayout")
