@@ -329,7 +329,6 @@ class Ui_Payment(QDialog):
         return the_result
 
     def payment_successful(self):
-        # CIA FBI
         # stopping timer and closing window and showing confirmation
         self.reset_timer()
         self.close_window()
