@@ -343,7 +343,6 @@ class Ui_Payment(QDialog):
                 self.b_buy.setEnabled(False)
                 price = self.t_price.text()
                 datetime_data = self.get_datetime_data()
-                # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                 global first_clock_now, last_clock_now, first_date_now, last_date_now
                 last_clock_now = get_current_time(datetime_data)
                 last_date_now = get_current_date(datetime_data)
