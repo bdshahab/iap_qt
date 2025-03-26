@@ -8,7 +8,7 @@ from Payment.payment import Ui_Payment
 from tools.Centralization import center_window
 from tools.dialogue import show_the_message
 from tools.for_images import show_image
-from tools.iap_variables import TITLE_COIN_NOT_SELECTED, MESSAGE_COIN_NOT_SELECTED
+from Payment.iap_variables import TITLE_COIN_NOT_SELECTED, MESSAGE_COIN_NOT_SELECTED
 
 
 class Ui_Select_Coin(QDialog):
