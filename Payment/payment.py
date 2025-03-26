@@ -10,7 +10,7 @@ from tools.Centralization import center_window
 from tools.dialogue import show_the_message
 from tools.for_images import *
 from tools.for_time import *
-from tools.iap_variables import *
+from Payment.iap_variables import *
 
 first_clock_now = ""
 last_clock_now = ""
