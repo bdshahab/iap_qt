@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QSizePoli
 import Global
 from tools.Centralization import center_window
 from tools.dialogue import show_the_message
-from tools.iap_variables import *
+from Payment.iap_variables import *
 
 
 class Ui_MainWindow(QMainWindow):
