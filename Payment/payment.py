@@ -326,6 +326,20 @@ class Ui_Payment(QDialog):
         the_ui = Ui_Select_Coin()
         the_ui.exec()
 
+    def is_verify_site_ok(self):
+        print("VERIFY_SITE_SEPARATOR:", VERIFY_SITE_SEPARATOR)
+        print(get_verify_url_coin(
+            Global.selected_payment).split(VERIFY_SITE_SEPARATOR)[0])
+        response = requests.get(get_verify_url_coin(
+            Global.selected_payment).split(VERIFY_SITE_SEPARATOR)[0])
+        if SERVER_DOWN_KEY in response.text:
+            return False
+        if response.status_code == 200:
+            return True
+        else:
+            # ERROR for accessing the server like 403
+            return False
+
     def get_datetime_data(self):
         response = requests.get(DATE_TIME_SITE)
         response.raise_for_status()  # Raise an error for bad status codes
@@ -492,6 +506,11 @@ class Ui_Payment(QDialog):
                     elif TESTING:
                         print("First Time format: " + first_clock_now)
                         print("First Date format: " + first_date_now)
+                    # Check if verify site is down or not
+                    if not self.is_verify_site_ok():
+                        show_the_message(TITLE_SERVER_ERROR,
+                                         MESSAGE_SERVER_ERROR, QMessageBox.Warning)
+                        self.goto_select_coin()
                 except requests.exceptions.ConnectionError:
                     show_the_message(
                         TITLE_LOST_CONNECTION, MESSAGE_LOST_CONNECTION, QMessageBox.Warning)
