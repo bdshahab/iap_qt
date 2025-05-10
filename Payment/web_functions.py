@@ -41,6 +41,9 @@ MONEY_PREFIX = ">"
 MONEY_SUFFIX = " "
 DATE_PREFIX = ", "
 DATE_SUFFIX = " "
+# To check if verify site is down or not
+VERIFY_SITE_SEPARATOR = "/tx/"
+SERVER_DOWN_KEY = ">Backend Error</p>"
 
 
 def get_latest_key_data():
@@ -51,7 +54,7 @@ def get_latest_key_data():
     global DATE_TIME_SITE, TIME_REGEX, DATE_REGEX, TIME_REGEX, DATE_REMOVE, DATE_REPLACE, CLOCK_REGEX, PRICE_SITE
     global PRICE_SITE_REGEX, PRICE_SITE_PREFIX, PRICE_SITE_SUFFIX, COIN_REGEX_1, COIN_REGEX_2, COIN_UPPER_LOWER
     global COIN_REGEX_SEPARATOR, ADDRESS_PREFIX, ADDRESS_SUFFIX, TXID_PREFIX, TXID_SUFFIX, MONEY_PREFIX
-    global MONEY_SUFFIX, DATE_PREFIX, DATE_SUFFIX
+    global MONEY_SUFFIX, DATE_PREFIX, DATE_SUFFIX, VERIFY_SITE_SEPARATOR, SERVER_DOWN_KEY
 
     for line in the_result.split("\n"):
         if num == 1:
@@ -101,6 +104,10 @@ def get_latest_key_data():
             DATE_PREFIX = line
         elif num == 23:
             DATE_SUFFIX = line
+        elif num == 24:
+            VERIFY_SITE_SEPARATOR = line
+        elif num == 25:
+            SERVER_DOWN_KEY = line
         num = num + 1
     return True
 
