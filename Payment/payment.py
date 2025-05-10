@@ -327,9 +327,6 @@ class Ui_Payment(QDialog):
         the_ui.exec()
 
     def is_verify_site_ok(self):
-        print("VERIFY_SITE_SEPARATOR:", VERIFY_SITE_SEPARATOR)
-        print(get_verify_url_coin(
-            Global.selected_payment).split(VERIFY_SITE_SEPARATOR)[0])
         response = requests.get(get_verify_url_coin(
             Global.selected_payment).split(VERIFY_SITE_SEPARATOR)[0])
         if SERVER_DOWN_KEY in response.text:
