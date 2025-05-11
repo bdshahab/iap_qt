@@ -1,3 +1,4 @@
+from Payment.iap_variables import *
 import sys
 
 from PySide6.QtCore import (QCoreApplication, QMetaObject)
@@ -7,9 +8,8 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QSizePoli
                                QVBoxLayout, QWidget, QMessageBox)
 
 import Global
-from tools.Centralization import center_window
 from tools.dialogue import show_the_message
-from Payment.iap_variables import *
+from tools.Centralization import center_window
 
 
 class Ui_MainWindow(QMainWindow):
@@ -97,7 +97,8 @@ class Ui_MainWindow(QMainWindow):
         self.set_CSS_style()
 
     def events(self):
-        self.resize(800, 600)
+        self.setMinimumSize(100, 1)
+        self.resize(Global.screen_width * 0.75, Global.screen_height * 0.75)
         center_window(self)
         self.pay_button.clicked.connect(self.goto_select_coin)
         self.about_button.clicked.connect(self.goto_about)
