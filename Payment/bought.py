@@ -91,14 +91,15 @@ class Ui_Bought(QDialog):
                            )
 
     def events(self):
-        self.resize(800, 600)
+        self.setMinimumSize(100, 1)
+        self.resize(Global.screen_width * 0.75, Global.screen_height * 0.75)
         center_window(self)
         self.ok.clicked.connect(self.close_window)
 
     def set_images(self):
         show_image([self.ok],
                    [r"Payment\Photos\buy.png"],
-                   [(Global.img_size*5, Global.img_size*5)])
+                   [(Global.img_size*3, Global.img_size*3)])
 
     def close_window(self):
         Global.user_bought = True
