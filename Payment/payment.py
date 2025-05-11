@@ -265,7 +265,8 @@ class Ui_Payment(QDialog):
             """)
 
     def events(self):
-        self.resize(800, 600)
+        self.setMinimumSize(100, 1)
+        self.resize(Global.screen_width * 0.75, Global.screen_height * 0.75)
         center_window(self)
         self.b_back.clicked.connect(self.goto_select_coin)
         self.b_buy.clicked.connect(self.goto_bought)
@@ -288,8 +289,8 @@ class Ui_Payment(QDialog):
         self.start_time()
 
     def set_images(self):
-        img_size = Global.img_size
-
+        img_size = Global.img_size * 0.8
+        self.icon.setToolTip(str(Global.selected_payment))
         show_image([self.icon],
                    [addr.cryptos.get(Global.selected_payment)],
                    [(img_size, img_size)])
@@ -316,7 +317,25 @@ class Ui_Payment(QDialog):
                    [(img_size * 2, img_size * 1.5)])
 
     def close_window(self):
-        self.close()
+        try:
+            Global.selected_payment = ""
+            self.reset_timer()
+            self.close()
+            self.deleteLater()
+        except Exception:
+            pass
+
+    def closeEvent(self, event):
+        # This function is necessary if the help dialog is shown and time runs out!
+        try:
+            # Close the QMessageBox if it exists
+            if self.msg and self.msg.isVisible():
+                self.msg.close()
+            super().closeEvent(event)
+            event.accept()
+            self.close_window()
+        except Exception as e:
+            pass
 
     def goto_select_coin(self):
         Global.selected_payment = ""
@@ -403,8 +422,6 @@ class Ui_Payment(QDialog):
             except (requests.exceptions.ConnectionError, ValueError):
                 show_the_message(
                     TITLE_LOST_CONNECTION, MESSAGE_LOST_CONNECTION, QMessageBox.Warning)
-            finally:
-                self.b_buy.setEnabled(True)
         else:
             show_the_message(
                 TITLE_EMPTY_TXID, MESSAGE_EMPTY_TXID, QMessageBox.Critical)
@@ -442,14 +459,6 @@ class Ui_Payment(QDialog):
 
     def remove_all_whitespaces(self, temp):
         return "".join(temp.split())
-
-    # This function is necessary if the help dialog is shown and time runs out!
-
-    def closeEvent(self, event):
-        # Close the QMessageBox if it exists
-        if self.msg and self.msg.isVisible():
-            self.msg.close()
-        event.accept()
 
     def set_data(self):
         self.input_address.setText(addr.addresses.get(Global.selected_payment))
