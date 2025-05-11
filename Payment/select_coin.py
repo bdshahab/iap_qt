@@ -258,7 +258,8 @@ class Ui_Select_Coin(QDialog):
             """)
 
     def events(self):
-        self.resize(800, 600)
+        self.setMinimumSize(100, 1)
+        self.resize(Global.screen_width * 0.75, Global.screen_height * 0.75)
         center_window(self)
         self.b_back.clicked.connect(self.close_window)
         self.b_next.clicked.connect(self.goto_payment)
@@ -294,7 +295,6 @@ class Ui_Select_Coin(QDialog):
             lambda: self.l_selected_coin.setText("Vertcoin (VTC)"))
         self.b_16.clicked.connect(
             lambda: self.l_selected_coin.setText("Zcash (ZEC)"))
-        # Global.selected_payment
 
     def set_images(self):
         ico_size = Global.img_size
@@ -305,6 +305,7 @@ class Ui_Select_Coin(QDialog):
                    [r"Payment\Photos\back.png"],
                    [(ico_size * 3, ico_size * 1.3)],
                    ['h'])
+        ico_size = ico_size * 0.8
         show_image([self.b_1],
                    [r"Payment\Photos\bitcoin (btc).png"],
                    [(ico_size, ico_size)])
@@ -355,7 +356,19 @@ class Ui_Select_Coin(QDialog):
                    [(ico_size, ico_size)])
 
     def close_window(self):
-        self.close()
+        try:
+            self.deleteLater()
+            self.close()
+        except Exception:
+            pass
+
+    def closeEvent(self, event):
+        try:
+            super().closeEvent(event)
+            event.accept()
+            self.close_window()
+        except Exception:
+            pass
 
     def goto_payment(self):
         if self.l_selected_coin.text() == "":
@@ -364,11 +377,13 @@ class Ui_Select_Coin(QDialog):
             Global.selected_payment = ""
         else:
             Global.selected_payment = self.l_selected_coin.text()
+            the_ui = None
             self.close_window()
             try:
                 the_ui = Ui_Payment()
                 the_ui.exec()
             except TypeError:
+                the_ui = None
                 # When price is less than MINIMUM_LIMIT_PRICE,
                 # we have to prevent the app to create another useless window for payment.
                 pass
