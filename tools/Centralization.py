@@ -1,12 +1,25 @@
 from PySide6.QtWidgets import QApplication
+import os
+import sys
 
 
+# set window in the center
 def center_window(window):
-    # set window in the center
-    from PySide6.QtGui import QScreen
-    screen_geometry = QScreen.availableGeometry(
-        QApplication.primaryScreen())
-    screen_center = screen_geometry.center()
-    geo = window.frameGeometry()
-    geo.moveCenter(screen_center)
-    window.move(geo.topLeft())
+    screen_geometry = QApplication.primaryScreen().availableGeometry()
+
+    sys.path.append(os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..')))
+    import Global
+
+    Global.screen_height = screen_geometry.height()
+    Global.screen_width = screen_geometry.width()
+
+    if Global.screen_height < Global.screen_width:
+        Global.img_size = Global.screen_height // 8
+    else:
+        Global.img_size = Global.screen_width // 8
+
+    # Resize the window to 75% of screen size
+    new_width = int(Global.screen_width * 0.75)
+    new_height = int(Global.screen_height * 0.75)
+    window.resize(new_width, new_height)
