@@ -334,7 +334,7 @@ class Ui_Payment(QDialog):
             super().closeEvent(event)
             event.accept()
             self.close_window()
-        except Exception as e:
+        except Exception:
             pass
 
     def goto_select_coin(self):
