@@ -8,7 +8,7 @@ from Payment.payment import Ui_Payment
 from tools.Centralization import center_window
 from tools.dialogue import show_the_message
 from tools.for_images import show_image
-from Payment.iap_variables import TITLE_COIN_NOT_SELECTED, MESSAGE_COIN_NOT_SELECTED
+from Payment.iap_variables import TITLE_COIN_NOT_SELECTED, MESSAGE_COIN_NOT_SELECTED, the_coins
 
 
 class Ui_Select_Coin(QDialog):
@@ -263,38 +263,11 @@ class Ui_Select_Coin(QDialog):
         center_window(self)
         self.b_back.clicked.connect(self.close_window)
         self.b_next.clicked.connect(self.goto_payment)
-        self.b_1.clicked.connect(
-            lambda: self.l_selected_coin.setText("Bitcoin (BTC)"))
-        self.b_2.clicked.connect(
-            lambda: self.l_selected_coin.setText("Bitcoin Cash (BCH)"))
-        self.b_3.clicked.connect(
-            lambda: self.l_selected_coin.setText("Bitcoin Gold (BTG)"))
-        self.b_4.clicked.connect(
-            lambda: self.l_selected_coin.setText("Dash (DASH)"))
-        self.b_5.clicked.connect(
-            lambda: self.l_selected_coin.setText("DigiByte (DGB)"))
-        self.b_6.clicked.connect(
-            lambda: self.l_selected_coin.setText("Dogecoin (DOGE)"))
-        self.b_7.clicked.connect(
-            lambda: self.l_selected_coin.setText("Ethereum (ETH)"))
-        self.b_8.clicked.connect(
-            lambda: self.l_selected_coin.setText("Firo (FIRO)"))
-        self.b_9.clicked.connect(
-            lambda: self.l_selected_coin.setText("Komodo (KMD)"))
-        self.b_10.clicked.connect(
-            lambda: self.l_selected_coin.setText("Litecoin (LTC)"))
-        self.b_11.clicked.connect(
-            lambda: self.l_selected_coin.setText("Qtum (QTUM)"))
-        self.b_12.clicked.connect(
-            lambda: self.l_selected_coin.setText("Ravencoin (RVN)"))
-        self.b_13.clicked.connect(
-            lambda: self.l_selected_coin.setText("Reddcoin (RDD)"))
-        self.b_14.clicked.connect(
-            lambda: self.l_selected_coin.setText("Verge (XVG)"))
-        self.b_15.clicked.connect(
-            lambda: self.l_selected_coin.setText("Vertcoin (VTC)"))
-        self.b_16.clicked.connect(
-            lambda: self.l_selected_coin.setText("Zcash (ZEC)"))
+
+        for i, name in enumerate(the_coins, start=1):
+            button = getattr(self, f"b_{i}")
+            button.clicked.connect(
+                lambda checked, c=name: self.l_selected_coin.setText(c))
 
     def set_images(self):
         ico_size = Global.img_size
@@ -306,54 +279,10 @@ class Ui_Select_Coin(QDialog):
                    [(ico_size * 3, ico_size * 1.3)],
                    ['h'])
         ico_size = ico_size * 0.8
-        show_image([self.b_1],
-                   [r"Payment\Photos\bitcoin (btc).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_2],
-                   [r"Payment\Photos\bitcoin cash (bch).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_3],
-                   [r"Payment\Photos\bitcoin gold (btg).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_4],
-                   [r"Payment\Photos\dash (dash).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_5],
-                   [r"Payment\Photos\digibyte (dgb).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_6],
-                   [r"Payment\Photos\dogecoin (doge).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_7],
-                   [r"Payment\Photos\ethereum (eth).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_8],
-                   [r"Payment\Photos\firo (firo).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_9],
-                   [r"Payment\Photos\komodo (kmd).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_10],
-                   [r"Payment\Photos\litecoin (ltc).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_11],
-                   [r"Payment\Photos\qtum (qtum).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_12],
-                   [r"Payment\Photos\ravencoin (rvn).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_13],
-                   [r"Payment\Photos\reddcoin (rdd).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_14],
-                   [r"Payment\Photos\verge (xvg).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_15],
-                   [r"Payment\Photos\vertcoin (vtc).png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_16],
-                   [r"Payment\Photos\zcash (zec).png"],
-                   [(ico_size, ico_size)])
+        for i, coin in enumerate(the_coins, start=1):
+            show_image([getattr(self, f"b_{i}")],
+                       [rf"Payment\Photos\{coin.lower()}.png"],
+                       [(ico_size, ico_size)])
 
     def close_window(self):
         try:
@@ -386,4 +315,3 @@ class Ui_Select_Coin(QDialog):
                 the_ui = None
                 # When price is less than MINIMUM_LIMIT_PRICE,
                 # we have to prevent the app to create another useless window for payment.
-                pass
