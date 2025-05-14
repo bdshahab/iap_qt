@@ -346,7 +346,7 @@ class Ui_Payment(QDialog):
         the_ui.exec()
 
     def get_datetime_data(self):
-        response = requests.get(DATE_TIME_SITE)
+        response = requests.get(other_vars['DATE_TIME_SITE'])
         response.raise_for_status()  # Raise an error for bad status codes
         the_result = response.text
         return the_result
