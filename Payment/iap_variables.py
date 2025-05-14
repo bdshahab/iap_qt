@@ -16,6 +16,62 @@ TOTAL_TIME = 15 * 60 + 1
 MINIMUM_LIMIT_PRICE = 0.00000001
 APP_PRICE = 0.01  # in US Dollar
 
+title_font = ("Arial", 16)
+timer_font = ("Arial", 26)
+normal_font = ("Arial", 14)
+
+the_coins = (
+    "Avalanche (AVAX)",
+    "Binance Coin (BNB)",
+    "Bitcoin (BTC)",
+    "Bitcoin Cash (BCH)",
+    "Cardano (ADA)",
+    "Dash (DASH)",
+    "DigiByte (DGB)",
+    "Dogecoin (DOGE)",
+    "Ethereum (ETH)",
+    "Groestlcoin (GRS)",
+    "Litecoin (LTC)",
+    "Polkadot (DOT)",
+    "Solana (SOL)",
+    "Stellar (XLM)",
+    "Toncoin (TON)",
+    "Tron (TRX)"
+)
+
+other_vars = {
+    # To get the current Date & Time
+    "DATE_TIME_SITE": "https://unixtime.org" + "CIA",
+    # We use this one for DATE_TIME_SITE
+    "TIME_REGEX": "([0-2][0-9]:[0-5][0-9]:[0-5][0-9])" + "CIA",
+    "DATE_REGEX": '([0-9]{1,2}-[A-Za-z]{3}-[0-9]{4})' + "CIA",
+    "DATE_REMOVE": "-" + "CIA",
+    "DATE_REPLACE": " " + "CIA",
+    # We use this time for verifying time in the receipt of payment
+    "CLOCK_REGEX": "([0-2][0-9]:[0-5][0-9]:[0-5][0-9])" + "CIA",
+    # To get the current price of coins
+    "PRICE_SITE": "https://cryptorank.io/price/" + "CIA",
+    "PRICE_SITE_REGEX": 'Price \\$ ([0-9,]+\\.?[0-9]*), Trading Volume' + "CIA",
+    "PRICE_SITE_PREFIX": "" + "CIA",
+    "PRICE_SITE_SUFFIX": "" + "CIA",
+    "COIN_REGEX_1": '\\([^%(]+\\)' + "CIA",
+    "COIN_REGEX_2": "" + "CIA",
+    # "lower" -- upper if uppercase and lower if lowercase and nothing("") for none
+    "COIN_UPPER_LOWER": "lower" + "CIA",
+    "COIN_REGEX_SEPARATOR": "-" + "CIA",
+    # To get the validation of payment
+    "ADDRESS_PREFIX": "/address/" + "CIA",
+    "ADDRESS_SUFFIX": "\">" + "CIA",
+    "TXID_PREFIX": "/transaction/" + "CIA",
+    "TXID_SUFFIX": "\"" + "CIA",
+    "MONEY_PREFIX": "" + "CIA",
+    "MONEY_SUFFIX": "</span>&nbsp;" + "CIA",
+    "DATE_PREFIX": "data-time>" + "CIA",
+    "DATE_SUFFIX": " " + "CIA",
+    "VERIFY_SITE": "https://blockchair.com" + "CIA",
+    "VERIFY_SITE_SEPARATOR": "/transaction/" + "CIA",
+}
+
 TITLE_PAID = "You paid before!"
 MESSAGE_PAID = "You don't need to pay again! You already bought this!"
 TITLE_PAYMENT_VERSION = "Use a newer version"
@@ -46,26 +102,3 @@ registered_txid = ""
 registered_address = ""
 registered_clock = ""
 registered_money = ""
-
-title_font = ("Arial", 16)
-timer_font = ("Arial", 26)
-normal_font = ("Arial", 14)
-
-the_coins = (
-    "Avalanche (AVAX)",
-    "Binance Coin (BNB)",
-    "Bitcoin (BTC)",
-    "Bitcoin Cash (BCH)",
-    "Cardano (ADA)",
-    "Dash (DASH)",
-    "DigiByte (DGB)",
-    "Dogecoin (DOGE)",
-    "Ethereum (ETH)",
-    "Groestlcoin (GRS)",
-    "Litecoin (LTC)",
-    "Polkadot (DOT)",
-    "Solana (SOL)",
-    "Stellar (XLM)",
-    "Toncoin (TON)",
-    "Tron (TRX)"
-)
