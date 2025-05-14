@@ -22,4 +22,3 @@ lower
 data-time>
  
 /transaction/
-https://blockchair.com
