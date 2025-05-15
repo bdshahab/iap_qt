@@ -359,7 +359,7 @@ class Ui_Payment(QDialog):
         the_ui = Ui_Bought()
         the_ui.exec()
 
-    def goto_bought(self) -> None:
+    def goto_bought(self):
         txid = self.t_txid.text()
         if txid:
             try:
