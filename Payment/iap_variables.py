@@ -70,6 +70,22 @@ other_vars = {
     "DATE_SUFFIX": " ",
     "VERIFY_SITE": "https://blockchair.com",
     "VERIFY_SITE_SEPARATOR": "/transaction/",
+    the_coins[0]: "/avalanche",
+    the_coins[1]: "/bnb",
+    the_coins[2]: "/bitcoin",
+    the_coins[3]: "/bitcoin-cash",
+    the_coins[4]: "/cardano",
+    the_coins[5]: "/dash",
+    the_coins[6]: "/digibyte",
+    the_coins[7]: "/dogecoin",
+    the_coins[8]: "/ethereum",
+    the_coins[9]: "/groestlcoin",
+    the_coins[10]: "/litecoin",
+    the_coins[11]: "/polkadot",
+    the_coins[12]: "/solana",
+    the_coins[13]: "/stellar",
+    the_coins[14]: "/ton",
+    the_coins[15]: "/tron",
 }
 
 TITLE_PAID = "You paid before!"
