@@ -414,6 +414,7 @@ class Ui_Payment(QDialog):
         else:
             show_the_message(
                 TITLE_EMPTY_TXID, MESSAGE_EMPTY_TXID, QMessageBox.Critical)
+        self.b_buy.setEnabled(True)
 
     def show_help(self):
         show_the_message(
