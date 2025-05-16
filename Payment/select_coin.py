@@ -270,15 +270,14 @@ class Ui_Select_Coin(QDialog):
                 lambda checked, c=name: self.l_selected_coin.setText(c))
 
     def set_images(self):
-        ico_size = Global.img_size
         show_image([self.b_back],
                    [r"Payment\Photos\back.png"],
-                   [(ico_size * 3, ico_size * 1.3)])
+                   [(int(Global.img_size * 3), int(Global.img_size * 1.3))])
         show_image([self.b_next],
                    [r"Payment\Photos\back.png"],
-                   [(ico_size * 3, ico_size * 1.3)],
+                   [(int(Global.img_size * 3), int(Global.img_size * 1.3))],
                    ['h'])
-        ico_size = ico_size * 0.8
+        ico_size = int(Global.img_size * 0.75)
         for i, coin in enumerate(the_coins, start=1):
             show_image([getattr(self, f"b_{i}")],
                        [rf"Payment\Photos\{coin.lower()}.png"],
