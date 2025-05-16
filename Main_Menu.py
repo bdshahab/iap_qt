@@ -1,3 +1,4 @@
+import importlib
 import threading
 import time
 from PySide6.QtCore import (QCoreApplication, QMetaObject)
@@ -158,9 +159,9 @@ class Ui_MainWindow(QMainWindow):
 
 
 def loading_heavy_modules_for_fast_loading():
-    from About.about import Ui_About
-    from Payment.select_coin import Ui_Select_Coin
-    from Payment.bought import Ui_Bought
+    importlib.import_module("About.about")
+    importlib.import_module("Payment.select_coin")
+    importlib.import_module("Payment.bought")
 
 
 if __name__ == "__main__":
@@ -168,7 +169,6 @@ if __name__ == "__main__":
     MainWindow = QMainWindow()
     ui = Ui_MainWindow()
     ui.show()
-    t = threading.Thread(target=loading_heavy_modules_for_fast_loading)
-    t.start()
+    threading.Thread(target=loading_heavy_modules_for_fast_loading).start()
 
     sys.exit(app.exec())
