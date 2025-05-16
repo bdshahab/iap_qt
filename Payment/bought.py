@@ -99,7 +99,7 @@ class Ui_Bought(QDialog):
     def set_images(self):
         show_image([self.ok],
                    [r"Payment\Photos\buy.png"],
-                   [(Global.img_size*3, Global.img_size*3)])
+                   [(int(Global.img_size*3), int(Global.img_size*3))])
 
     def close_window(self):
         Global.user_bought = True
