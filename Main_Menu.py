@@ -161,9 +161,6 @@ def loading_heavy_modules_for_fast_loading():
     from About.about import Ui_About
     from Payment.select_coin import Ui_Select_Coin
     from Payment.bought import Ui_Bought
-    Ui_About()
-    Ui_Select_Coin()
-    Ui_Bought()
 
 
 if __name__ == "__main__":
