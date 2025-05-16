@@ -72,7 +72,7 @@ class Ui_MainWindow(QMainWindow):
         self.retranslateUi(self)
 
         QMetaObject.connectSlotsByName(self)
-        Global.img_size = self.size().width()//10
+        Global.img_size = self.size().width() // 10
 
     def retranslateUi(self, MainWindow):
         self.setWindowIcon(QIcon("About/Photos/icon.png"))
