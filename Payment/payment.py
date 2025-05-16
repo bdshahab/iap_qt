@@ -289,7 +289,7 @@ class Ui_Payment(QDialog):
         self.start_time()
 
     def set_images(self):
-        img_size = Global.img_size * 0.8
+        img_size = int(Global.img_size * 0.8)
         self.icon.setToolTip(str(Global.selected_payment))
         show_image([self.icon],
                    [addr.cryptos.get(Global.selected_payment)],
@@ -305,16 +305,16 @@ class Ui_Payment(QDialog):
                    [(img_size, img_size)])
         show_image([self.b_back],
                    ["Payment/Photos/back.png"],
-                   [(img_size * 3, img_size * 1.3)])
+                   [(int(img_size * 3), int(img_size * 1.3))])
         show_image([self.b_help],
                    ["Payment/Photos/help.png"],
-                   [(img_size * 2, img_size * 1.5)])
+                   [(int(img_size * 2), int(img_size * 1.5))])
         show_image([self.b_copyall],
                    ["Payment/Photos/copy.png"],
-                   [(img_size * 2, img_size * 1.5)])
+                   [(int(img_size * 2), int(img_size * 1.5))])
         show_image([self.b_buy],
                    ["Payment/Photos/buy.png"],
-                   [(img_size * 2, img_size * 1.5)])
+                   [(int(img_size * 2), int(img_size * 1.5))])
 
     def close_window(self):
         try:
