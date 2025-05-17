@@ -6,10 +6,9 @@ from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLineEdit,
 import Global
 import Payment.addresses as addr
 from Payment.web_functions import *
-from tools.Centralization import center_window
 from tools.dialogue import show_the_message
-from tools.for_images import *
-from tools.for_time import *
+from tools.for_images import show_image
+from tools.for_time import get_display_time
 from Payment.iap_variables import *
 
 first_clock_now = ""
@@ -267,6 +266,7 @@ class Ui_Payment(QDialog):
     def events(self):
         self.setMinimumSize(100, 1)
         self.resize(Global.screen_width * 0.75, Global.screen_height * 0.75)
+        from tools.Centralization import center_window
         center_window(self)
         self.b_back.clicked.connect(self.goto_select_coin)
         self.b_buy.clicked.connect(self.goto_bought)
