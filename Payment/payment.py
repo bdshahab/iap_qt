@@ -6,9 +6,10 @@ from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLineEdit,
 import Global
 import Payment.addresses as addr
 from Payment.web_functions import *
+from tools.Centralization import center_window
 from tools.dialogue import show_the_message
-from tools.for_images import show_image
-from tools.for_time import get_display_time
+from tools.for_images import *
+from tools.for_time import *
 from Payment.iap_variables import *
 
 first_clock_now = ""
@@ -266,7 +267,6 @@ class Ui_Payment(QDialog):
     def events(self):
         self.setMinimumSize(100, 1)
         self.resize(Global.screen_width * 0.75, Global.screen_height * 0.75)
-        from tools.Centralization import center_window
         center_window(self)
         self.b_back.clicked.connect(self.goto_select_coin)
         self.b_buy.clicked.connect(self.goto_bought)
@@ -341,9 +341,8 @@ class Ui_Payment(QDialog):
         Global.selected_payment = ""
         self.reset_timer()
         self.close_window()
-        from Payment.select_coin import Ui_Select_Coin
-        the_ui = Ui_Select_Coin()
-        the_ui.exec()
+        from tools.dialogue import loading
+        loading(Global.NextWindow.UI_SELECT_COIN)
 
     def get_datetime_data(self):
         response = requests.get(other_vars['DATE_TIME_SITE'])
@@ -355,9 +354,8 @@ class Ui_Payment(QDialog):
         # stopping timer and closing window and showing confirmation
         self.reset_timer()
         self.close_window()
-        from Payment.bought import Ui_Bought
-        the_ui = Ui_Bought()
-        the_ui.exec()
+        from tools.dialogue import loading
+        loading(Global.NextWindow.UI_BOUGHT)
 
     def goto_bought(self):
         txid = self.t_txid.text()
@@ -385,6 +383,7 @@ class Ui_Payment(QDialog):
                     print(f"first_date_now: {first_date_now}")
                     print(f"last_date_now: {last_date_now}")
                 try:
+                    self.b_buy.setEnabled(True)
                     verify_result = verify_payment(
                         Global.selected_payment, price, txid, first_date_now,
                         last_date_now, first_clock_now, last_clock_now)
@@ -409,12 +408,13 @@ class Ui_Payment(QDialog):
                     show_the_message(
                         TITLE_TXID_NOT_EXIST, MESSAGE_TXID_NOT_EXIST, QMessageBox.Warning)
             except (requests.exceptions.ConnectionError, ValueError):
+                self.b_buy.setEnabled(True)
                 show_the_message(
                     TITLE_LOST_CONNECTION, MESSAGE_LOST_CONNECTION, QMessageBox.Warning)
         else:
+            self.b_buy.setEnabled(True)
             show_the_message(
                 TITLE_EMPTY_TXID, MESSAGE_EMPTY_TXID, QMessageBox.Critical)
-        self.b_buy.setEnabled(True)
 
     def show_help(self):
         show_the_message(
