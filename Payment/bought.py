@@ -71,27 +71,35 @@ class Ui_Bought(QDialog):
 
     def set_CSS_style(self):
         self.setStyleSheet("""
-                           QDialog{
-                               background-color: #15009c;
-                           }
-                           QLabel{
-                               color: white;
-                               font: 18pt;
-                           }
-                           QPushButton {
-                               background-color: #921ad6;
-                           }
-                           QPushButton:hover {
-                               background-color: #ce78ff;
-                           }
-                           QPushButton:pressed {
-                               background-color: #63009c;
-                           }
-                           """)
+            QDialog {
+                background-color: #15009c;
+            }
+            QMainWindow {
+                background-color: #15009c;
+            }
+            QLabel {
+                color: white;
+                font: 18pt;
+            }
+            QPushButton {
+                background-color: #921ad6;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 6px;
+            }
+            QPushButton:hover {
+                background-color: #ce78ff;
+            }
+            QPushButton:pressed {
+                background-color: #63009c;
+            }
+        """)
 
     def events(self):
         self.setMinimumSize(100, 1)
-        self.resize(Global.screen_width * 0.75, Global.screen_height * 0.75)
+        self.resize(int(Global.screen_width * 0.75),
+                    int(Global.screen_height * 0.75))
         center_window(self)
         self.ok.clicked.connect(self.close_window)
 
