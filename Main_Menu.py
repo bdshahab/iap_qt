@@ -148,14 +148,12 @@ class Ui_MainWindow(QMainWindow):
         if Global.user_bought:
             show_the_message(TITLE_PAID, MESSAGE_PAID, QMessageBox.Information)
         else:
-            from Payment.select_coin import Ui_Select_Coin
-            the_ui = Ui_Select_Coin()
-            the_ui.exec()
+            from tools.dialogue import loading
+            loading(Global.NextWindow.UI_SELECT_COIN)
 
     def goto_about(self):
-        from About.about import Ui_About
-        the_ui = Ui_About()
-        the_ui.exec()
+        from tools.dialogue import loading
+        loading(Global.NextWindow.UI_ABOUT)
 
 
 def loading_heavy_modules_for_fast_loading():
