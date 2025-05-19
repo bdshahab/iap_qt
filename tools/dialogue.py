@@ -37,6 +37,12 @@ def loading(next_window):
     from tools.Centralization import center_window
     center_window(loading_dialog)
     loading_dialog.setWindowOpacity(0.75)
+    loading_dialog.setStyleSheet("""
+                                QLabel {
+                                    color: blue;
+                                    font: 18pt;
+                                }
+                                """)
     loading_dialog.show()
 
     # Process events so the dialog is shown immediately
