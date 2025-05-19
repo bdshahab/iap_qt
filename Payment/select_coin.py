@@ -305,12 +305,11 @@ class Ui_Select_Coin(QDialog):
             Global.selected_payment = ""
         else:
             Global.selected_payment = self.l_selected_coin.text()
-            the_ui = None
             self.close_window()
             try:
-                the_ui = Ui_Payment()
-                the_ui.exec()
+                from tools.dialogue import loading
+                loading(Global.NextWindow.UI_PAYMENT)
             except TypeError:
-                the_ui = None
                 # When price is less than MINIMUM_LIMIT_PRICE,
                 # we have to prevent the app to create another useless window for payment.
+                pass
