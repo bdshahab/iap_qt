@@ -11,9 +11,6 @@ from tools.for_images import show_image
 class Ui_Bought(QDialog):
     def __init__(self):
         super().__init__()
-        self.setStyleSheet(u"background-color: rgb(163, 0, 255);\n"
-                           "color: rgb(255, 255, 255);\n"
-                           "font: 18pt \"Segoe UI\";")
         self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.vbox = QVBoxLayout()
@@ -74,21 +71,23 @@ class Ui_Bought(QDialog):
 
     def set_CSS_style(self):
         self.setStyleSheet("""
-                    QMainWindow{
-                            background-color: #f1ff00;
-                    }
-                    QPushButton {
-                        background-color: #808080;
-                        color: white;
-                        font-size: 20px;
-                        font-weight: bold;
-                    }
-                    QPushButton:hover {
-                        background-color: #b3b3b3;
-                        color: black;
-                    }
-                """
-                           )
+                           QDialog{
+                               background-color: #15009c;
+                           }
+                           QLabel{
+                               color: white;
+                               font: 18pt;
+                           }
+                           QPushButton {
+                               background-color: #921ad6;
+                           }
+                           QPushButton:hover {
+                               background-color: #ce78ff;
+                           }
+                           QPushButton:pressed {
+                               background-color: #63009c;
+                           }
+                           """)
 
     def events(self):
         self.setMinimumSize(100, 1)
@@ -104,3 +103,11 @@ class Ui_Bought(QDialog):
     def close_window(self):
         Global.user_bought = True
         self.close()
+
+    def closeEvent(self, event):
+        try:
+            super().closeEvent(event)
+            event.accept()
+            self.close_window()
+        except Exception:
+            pass
