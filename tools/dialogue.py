@@ -1,5 +1,9 @@
-from PySide6.QtWidgets import QMessageBox
+import os
+import sys
+from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtGui import QIcon
+
+from Payment.bought import Qt
 
 
 def show_the_message(title, message, icon_type):
@@ -30,7 +34,8 @@ def loading(next_window):
     label.setAlignment(Qt.AlignCenter)
     layout.addWidget(label)
     loading_dialog.setLayout(layout)
-    set_centralize(loading_dialog)
+    from tools.Centralization import center_window
+    center_window(loading_dialog)
     loading_dialog.setWindowOpacity(0.75)
     loading_dialog.show()
 
