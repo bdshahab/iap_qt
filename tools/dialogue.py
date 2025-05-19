@@ -93,4 +93,8 @@ def loading(next_window):
         the_ui = Ui_About()
     # Close the loading dialog before showing main UI
     loading_dialog.close()
+    # Remove posted events before opening next window
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.None_)
+    QCoreApplication.processEvents()
+
     the_ui.exec()
