@@ -4,7 +4,6 @@ from PySide6.QtWidgets import (QDialog, QHBoxLayout, QLabel,
                                QPushButton, QSizePolicy, QVBoxLayout, QMessageBox)
 
 import Global
-from Payment.payment import Ui_Payment
 from tools.Centralization import center_window
 from tools.dialogue import show_the_message
 from tools.for_images import show_image
