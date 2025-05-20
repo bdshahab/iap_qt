@@ -7,6 +7,7 @@ from Global import img_size
 from tools.Centralization import center_window
 from tools.for_images import show_image
 import webbrowser
+import Global
 
 
 class Ui_About(QDialog):
@@ -397,7 +398,7 @@ class Ui_About(QDialog):
         self.setWindowTitle("About")
 
         self.logo.setText(QCoreApplication.translate(
-            "Dialog", u"Financial Calculator 7.0", None))
+            "Dialog", u"IAP by Cryptocurrency", None))
         self.license.setText("")
         self.b_1.setText("")
         self.b_2.setText("")
@@ -497,7 +498,7 @@ class Ui_About(QDialog):
 
     def set_tooltips(self):
         self.logo.setToolTip(
-            "https://duckduckgo.com/?q=bdshahab+Financial+Calculator")
+            "https://duckduckgo.com/?q=bdshahab+IAP+by+Cryptocurrency")
         self.license.setToolTip("https://creativecommons.org/licenses/by/4.0")
         self.b_1.setToolTip("https://bdshahab.blogspot.com")
         self.b_2.setToolTip("https://bsky.app/profile/bdshahab.bsky.social")
@@ -545,7 +546,8 @@ class Ui_About(QDialog):
         self.b_40.setToolTip("https://www.youtube.com/@bdshahab")
 
     def events(self):
-        self.resize(800, 400)
+        self.setMinimumSize(100, 1)
+        self.resize(Global.screen_width * 0.75, Global.screen_height * 0.75)
         center_window(self)
         self.ok.clicked.connect(self.close_window)
         self.logo.clicked.connect(lambda: self.open_url(self.logo))
