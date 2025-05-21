@@ -1,5 +1,4 @@
 import re
-import time
 import requests
 from Payment.addresses import *
 import Payment.iap_variables as vars
