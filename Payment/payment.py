@@ -1,3 +1,4 @@
+import time
 from PySide6.QtCore import (QCoreApplication, QMetaObject)
 from PySide6.QtCore import QTimer, QElapsedTimer
 from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLineEdit,
@@ -284,7 +285,7 @@ class Ui_Payment(QDialog):
         self.msg = None
         self.timer = QTimer()
         self.elapsed_timer = QElapsedTimer()
-        self.base_time = Global.TOTAL_TIME
+        self.base_time = TOTAL_TIME
 
         self.start_time()
 
@@ -389,7 +390,7 @@ class Ui_Payment(QDialog):
                         last_date_now, first_clock_now, last_clock_now)
                     if verify_result == "OK":
                         self.payment_successful()
-                    if self.base_time < 0:
+                    elif self.base_time < 0:
                         return
                     elif verify_result == "ADDRESS":
                         show_the_message(
@@ -460,7 +461,7 @@ class Ui_Payment(QDialog):
         self.timer.timeout.connect(self.updateTime)
 
         self.elapsed_timer = QElapsedTimer()
-        self.base_time = Global.TOTAL_TIME
+        self.base_time = TOTAL_TIME
         self.time.setText(for_time.get_display_time(self.base_time))
         self.reset_timer()
 
@@ -473,12 +474,12 @@ class Ui_Payment(QDialog):
         But if the window freezes, it will not run, and time will fall behind in real time!
         So we use real-time difference to prevent that problem.
         """
-        self.base_time = Global.TOTAL_TIME - \
+        self.base_time = TOTAL_TIME - \
             (int(time.time()) - for_time.start_time_in_system)
         self.time.setText(for_time.get_display_time(self.base_time))
-        if self.base_time > 2 * (Global.TOTAL_TIME / 3):
+        if self.base_time > 2 * (TOTAL_TIME / 3):
             self.time.setStyleSheet("color: #0000ff;")
-        elif self.base_time > (Global.TOTAL_TIME / 3):
+        elif self.base_time > (TOTAL_TIME / 3):
             self.time.setStyleSheet("color: #14992f;")
         else:
             self.time.setStyleSheet("color: #ff0000;")
