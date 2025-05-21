@@ -9,7 +9,7 @@ from Payment.web_functions import *
 from tools.Centralization import center_window
 from tools.dialogue import show_the_message
 from tools.for_images import *
-from tools.for_time import *
+import tools.for_time as for_time
 from Payment.iap_variables import *
 
 first_clock_now = ""
@@ -389,6 +389,8 @@ class Ui_Payment(QDialog):
                         last_date_now, first_clock_now, last_clock_now)
                     if verify_result == "OK":
                         self.payment_successful()
+                    if self.base_time < 0:
+                        return
                     elif verify_result == "ADDRESS":
                         show_the_message(
                             TITLE_ANOTHER_ADDRESS, MESSAGE_ANOTHER_ADDRESS, QMessageBox.Warning)
@@ -459,15 +461,21 @@ class Ui_Payment(QDialog):
 
         self.elapsed_timer = QElapsedTimer()
         self.base_time = Global.TOTAL_TIME
-        self.time.setText(get_display_time(self.base_time))
+        self.time.setText(for_time.get_display_time(self.base_time))
         self.reset_timer()
 
-        self.updateTime()
         self.start_timer()
+        self.updateTime()
 
     def updateTime(self):
-        self.time.setText(get_display_time(self.base_time))
-        self.base_time = self.base_time - 1
+        """
+        This function updates every second, and we could also decrement the base time by 1 unit.
+        But if the window freezes, it will not run, and time will fall behind in real time!
+        So we use real-time difference to prevent that problem.
+        """
+        self.base_time = Global.TOTAL_TIME - \
+            (int(time.time()) - for_time.start_time_in_system)
+        self.time.setText(for_time.get_display_time(self.base_time))
         if self.base_time > 2 * (Global.TOTAL_TIME / 3):
             self.time.setStyleSheet("color: #0000ff;")
         elif self.base_time > (Global.TOTAL_TIME / 3):
@@ -479,6 +487,7 @@ class Ui_Payment(QDialog):
 
     def start_timer(self):
         if not self.timer.isActive():
+            for_time.start_time_in_system = int(time.time())
             self.elapsed_timer.start()
             self.timer.start(1000)  # Update every 1000 ms
             if self.t_price.text() == "":
@@ -509,3 +518,4 @@ class Ui_Payment(QDialog):
 
     def reset_timer(self):
         self.timer.stop()
+        for_time.start_time_in_system = 0
