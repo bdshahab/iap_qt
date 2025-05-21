@@ -1,6 +1,4 @@
-import importlib
-import threading
-import time
+import os
 from PySide6.QtCore import (QCoreApplication, QMetaObject)
 from PySide6.QtCore import QEvent
 from PySide6.QtGui import (QAction, QIcon)
@@ -156,17 +154,35 @@ class Ui_MainWindow(QMainWindow):
         loading(Global.NextWindow.UI_ABOUT)
 
 
-def loading_heavy_modules_for_fast_loading():
-    importlib.import_module("About.about")
-    importlib.import_module("Payment.select_coin")
-    importlib.import_module("Payment.bought")
+def set_centralize(app):
+    # Get the available screen size
+    screen_geometry = QApplication.primaryScreen().availableGeometry()
+    sys.path.append(os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..')))
+
+    Global.screen_height = screen_geometry.height()
+    Global.screen_width = screen_geometry.width()
+
+    if Global.screen_height < Global.screen_width:
+        Global.img_size = Global.screen_height // 8
+    else:
+        Global.img_size = Global.screen_width // 8
+
+    # Resize the window to 75% of screen size
+    new_width = int(Global.screen_width * 0.75)
+    new_height = int(Global.screen_height * 0.75)
+    app.resize(new_width, new_height)
+
+    app.move(
+        (Global.screen_width - new_width) // 2,
+        (Global.screen_height - new_height) // 2
+    )
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     MainWindow = QMainWindow()
     ui = Ui_MainWindow()
+    set_centralize(ui)
     ui.show()
-    threading.Thread(target=loading_heavy_modules_for_fast_loading).start()
-
     sys.exit(app.exec())
