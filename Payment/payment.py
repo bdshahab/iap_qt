@@ -495,23 +495,29 @@ class Ui_Payment(QDialog):
                 try:
                     if not get_latest_key_data():
                         show_the_message(TITLE_PAYMENT_VERSION,
-                                         MESSAGE_PAYMENT_VERSION, QMessageBox.critical)
-                    # set price of the app
-                    the_price = APP_PRICE / \
-                        float(get_coin_current_price(Global.selected_payment))
-                    self.t_price.setText(f"{the_price:.8f}")
-                    datetime_data = get_datetime_data()
-                    global first_clock_now, first_date_now
-                    first_clock_now = get_current_time(datetime_data)
-                    first_date_now = get_current_date(datetime_data)
+                                         MESSAGE_PAYMENT_VERSION, QMessageBox.Critical)
+                        self.close_window()
+                        from tools.dialogue import loading
+                        loading(Global.NextWindow.UI_ABOUT)
+                        return
+                    else:
+                        # set price of the app
+                        the_price = APP_PRICE / \
+                            float(get_coin_current_price(
+                                Global.selected_payment))
+                        self.t_price.setText(f"{the_price:.8f}")
+                        datetime_data = get_datetime_data()
+                        global first_clock_now, first_date_now
+                        first_clock_now = get_current_time(datetime_data)
+                        first_date_now = get_current_date(datetime_data)
 
-                    if the_price < MINIMUM_LIMIT_PRICE:
-                        show_the_message(
-                            TITLE_ANOTHER_CURRENCY, MESSAGE_ANOTHER_CURRENCY, QMessageBox.Warning)
-                        self.goto_select_coin()
-                    elif TESTING:
-                        print("First Time format: " + first_clock_now)
-                        print("First Date format: " + first_date_now)
+                        if the_price < MINIMUM_LIMIT_PRICE:
+                            show_the_message(
+                                TITLE_ANOTHER_CURRENCY, MESSAGE_ANOTHER_CURRENCY, QMessageBox.Warning)
+                            self.goto_select_coin()
+                        elif TESTING:
+                            print("First Time format: " + first_clock_now)
+                            print("First Date format: " + first_date_now)
                 except requests.exceptions.ConnectionError:
                     show_the_message(
                         TITLE_LOST_CONNECTION, MESSAGE_LOST_CONNECTION, QMessageBox.Warning)
