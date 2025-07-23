@@ -1,11 +1,5 @@
 from enum import Enum
 
-user_bought = False
-selected_payment = ""
-img_size = 0
-screen_width = 0
-screen_height = 0
-
 
 class NextWindow(Enum):
     MAIN = 0
@@ -15,5 +9,9 @@ class NextWindow(Enum):
     UI_ABOUT = 4
 
 
-# Usage
 next_window = NextWindow.MAIN
+user_bought = False
+selected_payment = ""
+img_size = 0
+screen_width = 0
+screen_height = 0
