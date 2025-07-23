@@ -1,11 +1,9 @@
 from tools.Centralization import center_window
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer, QCoreApplication, QEvent
 from PySide6.QtWidgets import QDialog, QLabel, QVBoxLayout, QMessageBox, QApplication
-from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtGui import QIcon
-from PySide6.QtCore import QCoreApplication, QEvent
 
-from Payment.bought import Qt
+from Payment.language import custom_texts
 
 
 def show_the_message(title, message, icon_type):
@@ -27,12 +25,11 @@ def loading(next_window):
         os.path.join(os.path.dirname(__file__), '..')))
 
     import Global  # path for this is done from parent window.
-    if next_window == Global.NextWindow.UI_SELECT_COIN:
-        if Global.user_bought:
-            from tools.dialogue import show_the_message
-            from Payment.iap_variables import TITLE_PAID, MESSAGE_PAID
-            show_the_message(TITLE_PAID, MESSAGE_PAID, QMessageBox.Information)
-            return
+    if (next_window == Global.NextWindow.UI_SELECT_COIN) and Global.user_bought:
+        from tools.dialogue import show_the_message
+        show_the_message(
+            custom_texts[33], custom_texts[34], QMessageBox.Information)
+        return
     # Create and setup loading dialog
     loading_dialog = QDialog()
     loading_dialog.setWindowFlags(
@@ -75,7 +72,8 @@ def loading(next_window):
             elif next_window == Global.NextWindow.UI_ABOUT:
                 from About.about import Ui_About
                 the_ui = Ui_About()
-        except Exception:
+        except Exception as e:
+            print(e)
             pass
         finally:
             loading_dialog.close()
