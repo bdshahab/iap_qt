@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (QDialog, QLabel, QPushButton,
 import Global
 from tools.Centralization import center_window
 from tools.for_images import show_image
-
+from Payment.language import custom_texts
 
 class Ui_Bought(QDialog):
     def __init__(self):
@@ -68,6 +68,13 @@ class Ui_Bought(QDialog):
         self.events()
         self.set_images()
         self.set_CSS_style()
+        self.set_custom_text()
+
+    def set_custom_text(self):
+        self.setWindowTitle(custom_texts[29])
+        self.l1.setText(custom_texts[30])
+        self.l2.setText(custom_texts[31])
+        self.l3.setText(custom_texts[32])
 
     def set_CSS_style(self):
         self.setStyleSheet("""
