@@ -1,6 +1,6 @@
 import time
-from PySide6.QtCore import (QCoreApplication, QMetaObject)
-from PySide6.QtCore import QTimer, QElapsedTimer
+from PySide6.QtCore import (
+    QCoreApplication, QMetaObject, QTimer, QElapsedTimer)
 from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLineEdit,
                                QSizePolicy, QVBoxLayout, QMessageBox)
 
@@ -12,6 +12,7 @@ from tools.dialogue import show_the_message
 from tools.for_images import *
 import tools.for_time as for_time
 from Payment.iap_variables import *
+from Payment.language import custom_texts
 
 first_clock_now = ""
 last_clock_now = ""
@@ -220,6 +221,34 @@ class Ui_Payment(QDialog):
         self.set_images()
         self.set_CSS_style()
         self.set_data()
+        self.set_custom_text()
+
+    def set_custom_text(self):
+        self.setWindowTitle(custom_texts[4])
+        self.title.setText(custom_texts[5])
+        self.l_address.setText(custom_texts[6])
+        self.l_price.setText(custom_texts[7])
+        self.l_txid.setText(custom_texts[8])
+        self.TITLE_ANOTHER_ADDRESS = custom_texts[9]
+        self.MESSAGE_ANOTHER_ADDRESS = custom_texts[10]
+        self.TITLE_EXACT_PRICE = custom_texts[11]
+        self.MESSAGE_EXACT_PRICE = custom_texts[12]
+        self.TITLE_TXID_NOT_EXIST = custom_texts[13]
+        self.MESSAGE_TXID_NOT_EXIST = custom_texts[14]
+        self.TITLE_ANOTHER_DATE = custom_texts[15]
+        self.MESSAGE_ANOTHER_DATE = custom_texts[16]
+        self.TITLE_ANOTHER_TIME = custom_texts[17]
+        self.MESSAGE_ANOTHER_TIME = custom_texts[18]
+        self.TITLE_LOST_CONNECTION = custom_texts[19]
+        self.MESSAGE_LOST_CONNECTION = custom_texts[20]
+        self.TITLE_EMPTY_TXID = custom_texts[21]
+        self.MESSAGE_EMPTY_TXID = custom_texts[22]
+        self.TITLE_HELP = custom_texts[23]
+        self.MESSAGE_HELP = custom_texts[24]
+        self.TITLE_PAYMENT_VERSION = custom_texts[25]
+        self.MESSAGE_PAYMENT_VERSION = custom_texts[26]
+        self.TITLE_ANOTHER_CURRENCY = custom_texts[27]
+        self.MESSAGE_ANOTHER_CURRENCY = custom_texts[28]
 
     def set_CSS_style(self):
         self.setStyleSheet("""
@@ -394,34 +423,34 @@ class Ui_Payment(QDialog):
                         return
                     elif verify_result == "ADDRESS":
                         show_the_message(
-                            TITLE_ANOTHER_ADDRESS, MESSAGE_ANOTHER_ADDRESS, QMessageBox.Warning)
+                            self.TITLE_ANOTHER_ADDRESS, self.MESSAGE_ANOTHER_ADDRESS, QMessageBox.Warning)
                     elif verify_result == "PRICE":
                         show_the_message(
-                            TITLE_EXACT_PRICE, MESSAGE_EXACT_PRICE, QMessageBox.Warning)
+                            self.TITLE_EXACT_PRICE, self.MESSAGE_EXACT_PRICE, QMessageBox.Warning)
                     elif verify_result == "TXID":
                         show_the_message(
-                            TITLE_TXID_NOT_EXIST, MESSAGE_TXID_NOT_EXIST, QMessageBox.Warning)
+                            self.TITLE_TXID_NOT_EXIST, self.MESSAGE_TXID_NOT_EXIST, QMessageBox.Warning)
                     elif verify_result == "DATE":
                         show_the_message(
-                            TITLE_ANOTHER_DATE, MESSAGE_ANOTHER_DATE, QMessageBox.Warning)
+                            self.TITLE_ANOTHER_DATE, self.MESSAGE_ANOTHER_DATE, QMessageBox.Warning)
                     elif verify_result == "TIME":
                         show_the_message(
-                            TITLE_ANOTHER_TIME, MESSAGE_ANOTHER_TIME, QMessageBox.Warning)
+                            self.TITLE_ANOTHER_TIME, self.MESSAGE_ANOTHER_TIME, QMessageBox.Warning)
                 except ValueError:
                     show_the_message(
-                        TITLE_TXID_NOT_EXIST, MESSAGE_TXID_NOT_EXIST, QMessageBox.Warning)
+                        self.TITLE_TXID_NOT_EXIST, self.MESSAGE_TXID_NOT_EXIST, QMessageBox.Warning)
             except (requests.exceptions.ConnectionError, ValueError):
                 self.b_buy.setEnabled(True)
                 show_the_message(
-                    TITLE_LOST_CONNECTION, MESSAGE_LOST_CONNECTION, QMessageBox.Warning)
+                    self.TITLE_LOST_CONNECTION, self.MESSAGE_LOST_CONNECTION, QMessageBox.Warning)
         else:
             self.b_buy.setEnabled(True)
             show_the_message(
-                TITLE_EMPTY_TXID, MESSAGE_EMPTY_TXID, QMessageBox.Critical)
+                self.TITLE_EMPTY_TXID, self.MESSAGE_EMPTY_TXID, QMessageBox.Critical)
 
     def show_help(self):
         show_the_message(
-            TITLE_HELP, MESSAGE_HELP, QMessageBox.Information)
+            self.TITLE_HELP, self.MESSAGE_HELP, QMessageBox.Information)
 
     def copy_to_clipboard(self, the_line_edit):
         # Select all text in the QLineEdit
@@ -494,8 +523,8 @@ class Ui_Payment(QDialog):
             if self.t_price.text() == "":
                 try:
                     if not get_latest_key_data():
-                        show_the_message(TITLE_PAYMENT_VERSION,
-                                         MESSAGE_PAYMENT_VERSION, QMessageBox.Critical)
+                        show_the_message(self.TITLE_PAYMENT_VERSION,
+                                         self.MESSAGE_PAYMENT_VERSION, QMessageBox.Critical)
                         self.close_window()
                         from tools.dialogue import loading
                         loading(Global.NextWindow.UI_ABOUT)
@@ -513,14 +542,14 @@ class Ui_Payment(QDialog):
 
                         if the_price < MINIMUM_LIMIT_PRICE:
                             show_the_message(
-                                TITLE_ANOTHER_CURRENCY, MESSAGE_ANOTHER_CURRENCY, QMessageBox.Warning)
+                                self.TITLE_ANOTHER_CURRENCY, self.MESSAGE_ANOTHER_CURRENCY, QMessageBox.Warning)
                             self.goto_select_coin()
                         elif TESTING:
                             print("First Time format: " + first_clock_now)
                             print("First Date format: " + first_date_now)
                 except requests.exceptions.ConnectionError:
                     show_the_message(
-                        TITLE_LOST_CONNECTION, MESSAGE_LOST_CONNECTION, QMessageBox.Warning)
+                        self.TITLE_LOST_CONNECTION, self.MESSAGE_LOST_CONNECTION, QMessageBox.Warning)
                     self.goto_select_coin()
 
     def reset_timer(self):
