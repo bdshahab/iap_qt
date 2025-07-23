@@ -7,7 +7,8 @@ import Global
 from tools.Centralization import center_window
 from tools.dialogue import show_the_message
 from tools.for_images import show_image
-from Payment.iap_variables import TITLE_COIN_NOT_SELECTED, MESSAGE_COIN_NOT_SELECTED, the_coins
+from Payment.iap_variables import the_coins
+from Payment.language import custom_texts
 
 
 class Ui_Select_Coin(QDialog):
@@ -222,6 +223,11 @@ class Ui_Select_Coin(QDialog):
         self.events()
         self.set_images()
         self.set_CSS_style()
+        self.set_custom_text()
+
+    def set_custom_text(self):
+        self.setWindowTitle(custom_texts[0])
+        self.title.setText(custom_texts[1])
 
     def set_CSS_style(self):
         self.setStyleSheet("""
@@ -299,8 +305,8 @@ class Ui_Select_Coin(QDialog):
 
     def goto_payment(self):
         if self.l_selected_coin.text() == "":
-            show_the_message(TITLE_COIN_NOT_SELECTED,
-                             MESSAGE_COIN_NOT_SELECTED, QMessageBox.Critical)
+            show_the_message(custom_texts[2],
+                             custom_texts[3], QMessageBox.Critical)
             Global.selected_payment = ""
         else:
             Global.selected_payment = self.l_selected_coin.text()
