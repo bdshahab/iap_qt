@@ -3,7 +3,6 @@ from PySide6.QtGui import (QIcon)
 from PySide6.QtWidgets import (
     QDialog, QHBoxLayout, QLayout, QPushButton, QSizePolicy, QVBoxLayout)
 
-from Global import img_size
 from tools.Centralization import center_window
 from tools.for_images import show_image
 import webbrowser
@@ -598,14 +597,14 @@ class Ui_About(QDialog):
         webbrowser.open(the_button.toolTip())
 
     def set_images(self):
-        ico_size = img_size - img_size // 3
+        ico_size = Global.img_size - Global.img_size // 3
 
         show_image([self.logo],
                    [r"About\Photos\icon.png"],
                    [(ico_size, ico_size)])
         show_image([self.license],
                    [r"About\Photos\license.png"],
-                   [(4 * img_size, img_size)])
+                   [(4 * Global.img_size, Global.img_size)])
         show_image([self.b_1],
                    [r"About\Photos\social media\blogger.png"],
                    [(ico_size, ico_size)])
