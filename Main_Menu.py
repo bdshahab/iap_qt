@@ -1,6 +1,5 @@
 import os
-from PySide6.QtCore import (QCoreApplication, QMetaObject)
-from PySide6.QtCore import QEvent
+from PySide6.QtCore import (QCoreApplication, QMetaObject, QEvent)
 from PySide6.QtGui import (QAction, QIcon)
 from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QSizePolicy,
                                QVBoxLayout, QWidget, QMessageBox)
@@ -10,6 +9,7 @@ import sys
 import Global
 from tools.dialogue import show_the_message
 from tools.Centralization import center_window
+from Payment.language import custom_texts, set_text_to
 
 
 class Ui_MainWindow(QMainWindow):
@@ -144,7 +144,8 @@ class Ui_MainWindow(QMainWindow):
 
     def goto_select_coin(self):
         if Global.user_bought:
-            show_the_message(TITLE_PAID, MESSAGE_PAID, QMessageBox.Information)
+            show_the_message(
+                custom_texts[33], custom_texts[34], QMessageBox.Information)
         else:
             from tools.dialogue import loading
             loading(Global.NextWindow.UI_SELECT_COIN)
