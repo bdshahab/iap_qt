@@ -9,7 +9,7 @@ import sys
 import Global
 from tools.dialogue import show_the_message
 from tools.Centralization import center_window
-from Payment.language import custom_texts, set_text_to
+from Payment.language import custom_texts
 
 
 class Ui_MainWindow(QMainWindow):
