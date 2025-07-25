@@ -225,6 +225,11 @@ class Ui_Payment(QDialog):
 
     def set_custom_text(self):
         self.setWindowTitle(custom_texts[4])
+        Global.set_limit_on_size_of_widgets(1, self.title)
+        Global.set_limit_on_size_of_widgets(0.25, self.l_address)
+        Global.set_limit_on_size_of_widgets(0.25, self.l_price)
+        Global.set_limit_on_size_of_widgets(1.55, self.l_txid)
+
         self.title.setText(custom_texts[5])
         self.l_address.setText(custom_texts[6])
         self.l_price.setText(custom_texts[7])
