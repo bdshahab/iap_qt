@@ -8,6 +8,7 @@ from tools.Centralization import center_window
 from tools.for_images import show_image
 from Payment.language import custom_texts
 
+
 class Ui_Bought(QDialog):
     def __init__(self):
         super().__init__()
@@ -72,6 +73,10 @@ class Ui_Bought(QDialog):
 
     def set_custom_text(self):
         self.setWindowTitle(custom_texts[29])
+        Global.set_limit_on_size_of_widgets(1.55, self.l1)
+        Global.set_limit_on_size_of_widgets(1.55, self.l2)
+        Global.set_limit_on_size_of_widgets(1.55, self.l3)
+
         self.l1.setText(custom_texts[30])
         self.l2.setText(custom_texts[31])
         self.l3.setText(custom_texts[32])
