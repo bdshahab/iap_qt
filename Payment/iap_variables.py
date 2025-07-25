@@ -16,10 +16,6 @@ TOTAL_TIME = 15 * 60 + 1
 MINIMUM_LIMIT_PRICE = 0.00000001
 APP_PRICE = 0.01  # in US Dollar
 
-title_font = ("Arial", 16)
-timer_font = ("Arial", 26)
-normal_font = ("Arial", 14)
-
 the_coins = (
     "Avalanche (AVAX)",
     "Binance Coin (BNB)",
