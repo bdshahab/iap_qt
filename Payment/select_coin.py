@@ -227,6 +227,7 @@ class Ui_Select_Coin(QDialog):
 
     def set_custom_text(self):
         self.setWindowTitle(custom_texts[0])
+        Global.set_limit_on_size_of_widgets(1.55, self.title)
         self.title.setText(custom_texts[1])
 
     def set_CSS_style(self):
