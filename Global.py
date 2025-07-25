@@ -15,3 +15,10 @@ selected_payment = ""
 img_size = 0
 screen_width = 0
 screen_height = 0
+
+
+def set_limit_on_size_of_widgets(factor, *the_widget):
+    the_limit = (screen_width // 2) - (img_size / 2)
+    the_limit *= factor
+    for w in the_widget:
+        w.setFixedWidth(the_limit)
