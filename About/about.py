@@ -6,6 +6,9 @@ from PySide6.QtWidgets import (
 from tools.Centralization import center_window
 from tools.for_images import show_image
 import webbrowser
+import requests
+from Payment.web_functions import GITHUB
+
 import Global
 
 
@@ -442,7 +445,8 @@ class Ui_About(QDialog):
         self.ok.setText(QCoreApplication.translate("Dialog", u"OK", None))
 
     # retranslateUi
-        self.set_tooltips()
+        self.init()
+        self.update_links()
         self.events()
         self.set_images()
         self.set_CSS_style()
@@ -495,54 +499,77 @@ class Ui_About(QDialog):
             }
         """)
 
+    def init(self):
+        self.link_logo = "httpshttps://duckduckgo.com/?q=bdshahab"
+        self.link_license = "httpshttps://creativecommons.org/licenses/by/4.0"
+        self.link_b_1 = "https://bdshahab.blogspot.com"
+        self.link_b_2 = "https://bsky.app/profile/bdshahab.bsky.social"
+        self.link_b_3 = "https://www.chess.com/member/bdshahab1982"
+        self.link_b_4 = "https://app.clouthub.com/#/users/u/bdshahab"
+        self.link_b_5 = "https://diamondapp.com/u/bdshahab"
+        self.link_b_6 = "https://diasp.org/u/bdshahab"
+        self.link_b_7 = "https://discord.gg/xgMdTXBhnE"
+        self.link_b_8 = "https://www.facebook.com/shahab.baradaran.dilmaghani"
+        self.link_b_9 = "https://www.flickr.com/photos/bdshahab"
+        self.link_b_10 = "https://flipboard.com/@bdshahab1982"
+        self.link_b_11 = "https://gab.com/bdshahab"
+        self.link_b_12 = "https://gettr.com/user/bdshahab"
+        self.link_b_13 = "https://www.instagram.com/bdshahab1982"
+        self.link_b_14 = "https://bdshahab.itch.io"
+        self.link_b_15 = "https://justpaste.it/u/bdshahab"
+        self.link_b_16 = "https://lichess.org/@/bdshahab"
+        self.link_b_17 = "https://www.linkedin.com/company/bdshahab"
+        self.link_b_18 = "https://bdshahab1982.livejournal.com"
+        self.link_b_19 = "https://mastodon.social/@bdshahab"
+        self.link_b_20 = "https://matrix.to/#/#bdshahab:matrix.org"
+        self.link_b_21 = "https://bdshahab.medium.com"
+        self.link_b_22 = "https://mewe.com/bdshahab"
+        self.link_b_23 = "https://www.minds.com/bdshahab"
+        self.link_b_24 = "https://odysee.com/@bdshahab"
+        self.link_b_25 = "https://www.pinterest.com/bdshahab"
+        self.link_b_26 = "https://primal.net/p/npub1lu5m9cjqnyaqay0uc77t526qjtkx5qu8qxe8l2kqrflmagac3c8q7g8nu5"
+        self.link_b_27 = "https://www.reddit.com/user/bdshahab"
+        self.link_b_28 = "https://rumble.com/c/c-1832445/videos"
+        self.link_b_29 = "https://spoutible.com/bdshahab"
+        self.link_b_30 = "https://steemit.com/@bdshahab"
+        self.link_b_31 = "https://t.me/bd_shahab"
+        self.link_b_32 = "https://the-dots.com/users/shahab-baradaran-dilmaghani-1291359"
+        self.link_b_33 = "https://www.threads.net/@bdshahab1982"
+        self.link_b_34 = "https://www.tiktok.com/@bdshahab"
+        self.link_b_35 = "https://bdshahab.tumblr.com"
+        self.link_b_36 = "https://vk.com/bdshahab"
+        self.link_b_37 = "https://bdsh.wordpress.com"
+        self.link_b_38 = "https://x.com/bdshahab"
+        self.link_b_39 = "https://www.xing.com/profile/Shahab_BaradaranDilmaghani"
+        self.link_b_40 = "https://www.youtube.com/@bdshahab"
+
+    def update_links(self):
+        try:
+            LINKS_SITE = GITHUB + "links.txt"
+            response = requests.get(LINKS_SITE)
+            # response.raise_for_status()  # Raise an error for bad status codes
+            the_result = response.text
+            list_of_links = []
+
+            for line in the_result.split("\n"):
+                list_of_links.append(line)
+
+            self.logo.setToolTip(f"{list_of_links[0]} {self.logo.text()}")
+            self.license.setToolTip(list_of_links[1])
+
+            for i in range(1, 41):
+                getattr(self, f"b_{i}").setToolTip(list_of_links[i + 1])
+        except Exception:
+            self.set_tooltips()
+
     def set_tooltips(self):
-        self.logo.setToolTip(
-            "https://duckduckgo.com/?q=bdshahab+IAP+by+Cryptocurrency")
-        self.license.setToolTip("https://creativecommons.org/licenses/by/4.0")
-        self.b_1.setToolTip("https://bdshahab.blogspot.com")
-        self.b_2.setToolTip("https://bsky.app/profile/bdshahab.bsky.social")
-        self.b_3.setToolTip("https://www.chess.com/member/bdshahab1982")
-        self.b_4.setToolTip("https://app.clouthub.com/#/users/u/bdshahab")
-        self.b_5.setToolTip("https://diamondapp.com/u/bdshahab")
-        self.b_6.setToolTip("https://diasp.org/u/bdshahab")
-        self.b_7.setToolTip("https://discord.gg/xgMdTXBhnE")
-        self.b_8.setToolTip(
-            "https://www.facebook.com/shahab.baradaran.dilmaghani")
-        self.b_9.setToolTip("https://www.flickr.com/photos/bdshahab")
-        self.b_10.setToolTip("https://flipboard.com/@bdshahab1982")
-        self.b_11.setToolTip("https://gab.com/bdshahab")
-        self.b_12.setToolTip("https://gettr.com/user/bdshahab")
-        self.b_13.setToolTip("https://www.instagram.com/bdshahab1982")
-        self.b_14.setToolTip("https://bdshahab.itch.io")
-        self.b_15.setToolTip("https://justpaste.it/u/bdshahab")
-        self.b_16.setToolTip("https://lichess.org/@/bdshahab")
-        self.b_17.setToolTip("https://www.linkedin.com/company/bdshahab")
-        self.b_18.setToolTip("https://bdshahab1982.livejournal.com")
-        self.b_19.setToolTip("https://mastodon.social/@bdshahab")
-        self.b_20.setToolTip("https://matrix.to/#/#bdshahab:matrix.org")
-        self.b_21.setToolTip("https://bdshahab.medium.com")
-        self.b_22.setToolTip("https://mewe.com/bdshahab")
-        self.b_23.setToolTip("https://www.minds.com/bdshahab")
-        self.b_24.setToolTip("https://odysee.com/@bdshahab")
-        self.b_25.setToolTip("https://www.pinterest.com/bdshahab")
-        self.b_26.setToolTip(
-            "https://primal.net/p/npub1lu5m9cjqnyaqay0uc77t526qjtkx5qu8qxe8l2kqrflmagac3c8q7g8nu5")
-        self.b_27.setToolTip("https://www.reddit.com/user/bdshahab")
-        self.b_28.setToolTip("https://rumble.com/c/c-1832445/videos")
-        self.b_29.setToolTip("https://spoutible.com/bdshahab")
-        self.b_30.setToolTip("https://steemit.com/@bdshahab")
-        self.b_31.setToolTip("https://t.me/bd_shahab")
-        self.b_32.setToolTip(
-            "https://the-dots.com/users/shahab-baradaran-dilmaghani-1291359")
-        self.b_33.setToolTip("https://www.threads.net/@bdshahab1982")
-        self.b_34.setToolTip("https://www.tiktok.com/@bdshahab")
-        self.b_35.setToolTip("https://bdshahab.tumblr.com")
-        self.b_36.setToolTip("https://vk.com/bdshahab")
-        self.b_37.setToolTip("https://bdsh.wordpress.com")
-        self.b_38.setToolTip("https://x.com/bdshahab")
-        self.b_39.setToolTip(
-            "https://www.xing.com/profile/Shahab_BaradaranDilmaghani")
-        self.b_40.setToolTip("https://www.youtube.com/@bdshahab")
+        self.logo.setToolTip(f"{self.link_logo} {self.logo.text()}")
+        self.license.setToolTip(self.link_license)
+
+        for i in range(1, 41):
+            btn = getattr(self, f"b_{i}")
+            link = getattr(self, f"link_b_{i}")
+            btn.setToolTip(link)
 
     def events(self):
         self.setMinimumSize(100, 1)
