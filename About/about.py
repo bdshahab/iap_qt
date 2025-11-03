@@ -500,8 +500,8 @@ class Ui_About(QDialog):
         """)
 
     def init(self):
-        self.link_logo = "httpshttps://duckduckgo.com/?q=bdshahab"
-        self.link_license = "httpshttps://creativecommons.org/licenses/by/4.0"
+        self.link_logo = "https://duckduckgo.com/?q=bdshahab"
+        self.link_license = "https://opensource.org/license/mit"
         self.link_b_1 = "https://bdshahab.blogspot.com"
         self.link_b_2 = "https://bsky.app/profile/bdshahab.bsky.social"
         self.link_b_3 = "https://www.chess.com/member/bdshahab1982"
@@ -755,3 +755,4 @@ class Ui_About(QDialog):
 
     def close_window(self):
         self.close()
+
