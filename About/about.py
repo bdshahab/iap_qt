@@ -631,7 +631,7 @@ class Ui_About(QDialog):
                    [(ico_size, ico_size)])
         show_image([self.license],
                    [r"About\Photos\license.png"],
-                   [(4 * Global.img_size, Global.img_size)])
+                   [(Global.img_size, Global.img_size)])
         show_image([self.b_1],
                    [r"About\Photos\social media\blogger.png"],
                    [(ico_size, ico_size)])
@@ -755,4 +755,3 @@ class Ui_About(QDialog):
 
     def close_window(self):
         self.close()
-
