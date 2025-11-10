@@ -1,5 +1,3 @@
-import os
-import sys
 import time
 from PySide6.QtCore import (
     QCoreApplication, QMetaObject, QTimer, QElapsedTimer)
@@ -225,9 +223,6 @@ class Ui_Payment(QDialog):
         self.set_CSS_style()
         self.set_data()
         self.set_custom_text()
-
-    def init(self):
-        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
     def set_custom_text(self):
         self.setWindowTitle(custom_texts[4])
