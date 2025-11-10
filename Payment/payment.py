@@ -1,3 +1,5 @@
+import os
+import sys
 import time
 from PySide6.QtCore import (
     QCoreApplication, QMetaObject, QTimer, QElapsedTimer)
@@ -13,6 +15,7 @@ from tools.for_images import *
 import tools.for_time as for_time
 from Payment.iap_variables import *
 from Payment.language import custom_texts
+
 
 first_clock_now = ""
 last_clock_now = ""
@@ -223,6 +226,9 @@ class Ui_Payment(QDialog):
         self.set_data()
         self.set_custom_text()
 
+    def init(self):
+        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
     def set_custom_text(self):
         self.setWindowTitle(custom_texts[4])
         Global.set_limit_on_size_of_widgets(1, self.title)
@@ -402,6 +408,7 @@ class Ui_Payment(QDialog):
                 global first_clock_now, last_clock_now, first_date_now, last_date_now
                 last_clock_now = get_current_time(datetime_data)
                 last_date_now = get_current_date(datetime_data)
+
                 if TESTING:
                     print("Second Time format: " + last_clock_now)
                     print("Second Date format: " + last_date_now)

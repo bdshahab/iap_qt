@@ -4,7 +4,6 @@ from PySide6.QtGui import (QAction, QIcon)
 from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QSizePolicy,
                                QVBoxLayout, QWidget, QMessageBox)
 
-from Payment.iap_variables import *
 import sys
 import Global
 from tools.dialogue import show_the_message

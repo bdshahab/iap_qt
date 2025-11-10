@@ -19,7 +19,6 @@ def get_latest_key_data():
     response.raise_for_status()  # Raise an error for bad status codes
     the_result = response.text
     num = 1
-
     for line in the_result.split("\n"):
         if num == 1:
             if line != IAP_VERSION:
