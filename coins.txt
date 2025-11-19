@@ -1,2 +1,10 @@
-BTC
-TRON
+Bitcoin (BTC)
+Litecoin (LTC)
+Bitcoin Cash (BCH)
+Dogecoin (DOGE)
+DigiByte (DGB)
+Groestlcoin (GRS)
+Dash (DASH)
+eCash (XEC)
+Bitcoin SV (BSV)
+Tron (TRX / TRC-20)
