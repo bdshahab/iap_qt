@@ -72,8 +72,7 @@ def loading(next_window):
             elif next_window == Global.NextWindow.UI_ABOUT:
                 from About.about import Ui_About
                 the_ui = Ui_About()
-        except Exception as e:
-            print(e)
+        except Exception:
             pass
         finally:
             loading_dialog.close()

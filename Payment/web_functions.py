@@ -11,7 +11,7 @@ DEFAULT_PRICE_KEYWORD = "default%20prices/"
 DEFAULT_PRICE_SUFFIX = ".txt"
 KEY_DATA_SITE = GITHUB + "key_data.txt"
 # updatable key data
-IAP_VERSION = "4"
+IAP_VERSION = "5"
 
 
 def get_latest_key_data():
@@ -68,73 +68,65 @@ def get_latest_key_data():
         elif num == 23:
             vars.other_vars["DATE_SUFFIX"] = line
         elif num == 24:
-            vars.other_vars["VERIFY_SITE_SEPARATOR"] = line
-        elif num == 25:
             vars.other_vars["VERIFY_SITE"] = line
+        elif num == 25:
+            vars.other_vars["VERIFY_SITE_SEPARATOR"] = line
         elif num == 26:
-            vars.other_vars[vars.the_coins[0]] = line
+            vars.other_vars["PRICE_SEPARATOR"] = line
         elif num == 27:
-            vars.other_vars[vars.the_coins[1]] = line
+            vars.other_vars[vars.the_coins[0]] = line
         elif num == 28:
-            vars.other_vars[vars.the_coins[2]] = line
+            vars.other_vars[vars.the_coins[1]] = line
         elif num == 29:
-            vars.other_vars[vars.the_coins[3]] = line
+            vars.other_vars[vars.the_coins[2]] = line
         elif num == 30:
-            vars.other_vars[vars.the_coins[4]] = line
+            vars.other_vars[vars.the_coins[3]] = line
         elif num == 31:
-            vars.other_vars[vars.the_coins[5]] = line
+            vars.other_vars[vars.the_coins[4]] = line
         elif num == 32:
-            vars.other_vars[vars.the_coins[6]] = line
+            vars.other_vars[vars.the_coins[5]] = line
         elif num == 33:
-            vars.other_vars[vars.the_coins[7]] = line
+            vars.other_vars[vars.the_coins[6]] = line
         elif num == 34:
-            vars.other_vars[vars.the_coins[8]] = line
+            vars.other_vars[vars.the_coins[7]] = line
         elif num == 35:
-            vars.other_vars[vars.the_coins[9]] = line
+            vars.other_vars[vars.the_coins[8]] = line
         elif num == 36:
-            vars.other_vars[vars.the_coins[10]] = line
-        elif num == 37:
-            vars.other_vars[vars.the_coins[11]] = line
-        elif num == 38:
-            vars.other_vars[vars.the_coins[12]] = line
-        elif num == 39:
-            vars.other_vars[vars.the_coins[13]] = line
-        elif num == 40:
-            vars.other_vars[vars.the_coins[14]] = line
-        elif num == 41:
-            vars.other_vars[vars.the_coins[15]] = line
-        elif num == 42:
             addresses[vars.the_coins[0]] = line
-        elif num == 43:
+        elif num == 37:
             addresses[vars.the_coins[1]] = line
-        elif num == 44:
+        elif num == 38:
             addresses[vars.the_coins[2]] = line
-        elif num == 45:
+        elif num == 39:
             addresses[vars.the_coins[3]] = line
-        elif num == 46:
+        elif num == 40:
             addresses[vars.the_coins[4]] = line
-        elif num == 47:
+        elif num == 41:
             addresses[vars.the_coins[5]] = line
-        elif num == 48:
+        elif num == 42:
             addresses[vars.the_coins[6]] = line
-        elif num == 49:
+        elif num == 43:
             addresses[vars.the_coins[7]] = line
-        elif num == 50:
+        elif num == 44:
             addresses[vars.the_coins[8]] = line
+        elif num == 45:
+            vars.price_decimals[vars.the_coins[0]] = line
+        elif num == 46:
+            vars.price_decimals[vars.the_coins[1]] = line
+        elif num == 47:
+            vars.price_decimals[vars.the_coins[2]] = line
+        elif num == 48:
+            vars.price_decimals[vars.the_coins[3]] = line
+        elif num == 49:
+            vars.price_decimals[vars.the_coins[4]] = line
+        elif num == 50:
+            vars.price_decimals[vars.the_coins[5]] = line
         elif num == 51:
-            addresses[vars.the_coins[9]] = line
+            vars.price_decimals[vars.the_coins[6]] = line
         elif num == 52:
-            addresses[vars.the_coins[10]] = line
+            vars.price_decimals[vars.the_coins[7]] = line
         elif num == 53:
-            addresses[vars.the_coins[11]] = line
-        elif num == 54:
-            addresses[vars.the_coins[12]] = line
-        elif num == 55:
-            addresses[vars.the_coins[13]] = line
-        elif num == 56:
-            addresses[vars.the_coins[14]] = line
-        elif num == 57:
-            addresses[vars.the_coins[15]] = line
+            vars.price_decimals[vars.the_coins[8]] = line
         num = num + 1
     update_urls()
     return True
@@ -298,6 +290,7 @@ def get_registered_clock(the_txid_data):
 
 
 def check_price_in_txid_data(the_price, the_txid_data):
+    f"{float(the_price):,f}"
     search_for_price = vars.other_vars["MONEY_PREFIX"] + \
         the_price + vars.other_vars["MONEY_SUFFIX"]
     return search_for_price in the_txid_data
@@ -316,6 +309,13 @@ def is_time_in_duration(the_text_time, first_time, last_time):
     the_first_time = get_time_in_seconds(first_time)
     the_last_time = get_time_in_seconds(last_time)
     return the_first_time <= the_time <= the_last_time
+
+
+def format_with_separator(number, decimal_places=8, separator=','):
+    number = float(str(number))
+    formatted = f"{number:,.{decimal_places}f}"
+    formatted = formatted.replace(',', separator)
+    return formatted
 
 
 def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date, the_first_time, the_last_time):
@@ -341,9 +341,16 @@ def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date,
     except Exception:
         return "TIME"
     try:
+        # First, we need to format the price to display properly on the TXID verification website.
+        for i in range(len(vars.the_coins)):
+            if the_coin == vars.the_coins[i]:
+                the_price = format_with_separator(
+                    the_price, vars.price_decimals[vars.the_coins[i]], vars.other_vars["PRICE_SEPARATOR"])
+                break
+        # Now we could check the price in the website
         if not (check_price_in_txid_data(the_price, the_txid_data)):
             return "PRICE"
-    except Exception:
+    except Exception as e:
         return "PRICE"
     try:
         if not (check_txid_in_txid_data(the_txid, the_txid_data)):

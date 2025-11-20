@@ -1,5 +1,4 @@
 from PySide6.QtCore import (QCoreApplication, QMetaObject, Qt)
-from PySide6.QtGui import (QIcon)
 from PySide6.QtWidgets import (QDialog, QHBoxLayout, QLabel,
                                QPushButton, QSizePolicy, QVBoxLayout, QMessageBox)
 
@@ -49,17 +48,17 @@ class Ui_Select_Coin(QDialog):
 
         self.h1.addWidget(self.b_3)
 
+        self.verticalLayout.addLayout(self.h1)
+
+        self.h2 = QHBoxLayout()
+        self.h2.setObjectName(u"h2")
         self.b_4 = QPushButton(self)
         self.b_4.setObjectName(u"b_4")
         sizePolicy.setHeightForWidth(self.b_4.sizePolicy().hasHeightForWidth())
         self.b_4.setSizePolicy(sizePolicy)
 
-        self.h1.addWidget(self.b_4)
+        self.h2.addWidget(self.b_4)
 
-        self.verticalLayout.addLayout(self.h1)
-
-        self.h2 = QHBoxLayout()
-        self.h2.setObjectName(u"h2")
         self.b_5 = QPushButton(self)
         self.b_5.setObjectName(u"b_5")
         sizePolicy.setHeightForWidth(self.b_5.sizePolicy().hasHeightForWidth())
@@ -74,24 +73,24 @@ class Ui_Select_Coin(QDialog):
 
         self.h2.addWidget(self.b_6)
 
+        self.verticalLayout.addLayout(self.h2)
+
+        self.h3 = QHBoxLayout()
+        self.h3.setObjectName(u"h3")
         self.b_7 = QPushButton(self)
         self.b_7.setObjectName(u"b_7")
         sizePolicy.setHeightForWidth(self.b_7.sizePolicy().hasHeightForWidth())
         self.b_7.setSizePolicy(sizePolicy)
 
-        self.h2.addWidget(self.b_7)
+        self.h3.addWidget(self.b_7)
 
         self.b_8 = QPushButton(self)
         self.b_8.setObjectName(u"b_8")
         sizePolicy.setHeightForWidth(self.b_8.sizePolicy().hasHeightForWidth())
         self.b_8.setSizePolicy(sizePolicy)
 
-        self.h2.addWidget(self.b_8)
+        self.h3.addWidget(self.b_8)
 
-        self.verticalLayout.addLayout(self.h2)
-
-        self.h3 = QHBoxLayout()
-        self.h3.setObjectName(u"h3")
         self.b_9 = QPushButton(self)
         self.b_9.setObjectName(u"b_9")
         sizePolicy.setHeightForWidth(self.b_9.sizePolicy().hasHeightForWidth())
@@ -99,67 +98,7 @@ class Ui_Select_Coin(QDialog):
 
         self.h3.addWidget(self.b_9)
 
-        self.b_10 = QPushButton(self)
-        self.b_10.setObjectName(u"b_10")
-        sizePolicy.setHeightForWidth(
-            self.b_10.sizePolicy().hasHeightForWidth())
-        self.b_10.setSizePolicy(sizePolicy)
-
-        self.h3.addWidget(self.b_10)
-
-        self.b_11 = QPushButton(self)
-        self.b_11.setObjectName(u"b_11")
-        sizePolicy.setHeightForWidth(
-            self.b_11.sizePolicy().hasHeightForWidth())
-        self.b_11.setSizePolicy(sizePolicy)
-
-        self.h3.addWidget(self.b_11)
-
-        self.b_12 = QPushButton(self)
-        self.b_12.setObjectName(u"b_12")
-        sizePolicy.setHeightForWidth(
-            self.b_12.sizePolicy().hasHeightForWidth())
-        self.b_12.setSizePolicy(sizePolicy)
-
-        self.h3.addWidget(self.b_12)
-
         self.verticalLayout.addLayout(self.h3)
-
-        self.h4 = QHBoxLayout()
-        self.h4.setObjectName(u"h4")
-        self.b_13 = QPushButton(self)
-        self.b_13.setObjectName(u"b_13")
-        sizePolicy.setHeightForWidth(
-            self.b_13.sizePolicy().hasHeightForWidth())
-        self.b_13.setSizePolicy(sizePolicy)
-
-        self.h4.addWidget(self.b_13)
-
-        self.b_14 = QPushButton(self)
-        self.b_14.setObjectName(u"b_14")
-        sizePolicy.setHeightForWidth(
-            self.b_14.sizePolicy().hasHeightForWidth())
-        self.b_14.setSizePolicy(sizePolicy)
-
-        self.h4.addWidget(self.b_14)
-
-        self.b_15 = QPushButton(self)
-        self.b_15.setObjectName(u"b_15")
-        sizePolicy.setHeightForWidth(
-            self.b_15.sizePolicy().hasHeightForWidth())
-        self.b_15.setSizePolicy(sizePolicy)
-
-        self.h4.addWidget(self.b_15)
-
-        self.b_16 = QPushButton(self)
-        self.b_16.setObjectName(u"b_16")
-        sizePolicy.setHeightForWidth(
-            self.b_16.sizePolicy().hasHeightForWidth())
-        self.b_16.setSizePolicy(sizePolicy)
-
-        self.h4.addWidget(self.b_16)
-
-        self.verticalLayout.addLayout(self.h4)
 
         self.h_buttons = QHBoxLayout()
         self.h_buttons.setObjectName(u"h_buttons")
@@ -197,8 +136,8 @@ class Ui_Select_Coin(QDialog):
     # setupUi
 
     def retranslateUi(self, Dialog):
-        self.setWindowIcon(QIcon("About/Photos/icon.png"))
-        self.setWindowTitle("Select coin")
+        Dialog.setWindowTitle(
+            QCoreApplication.translate("Dialog", u"Dialog", None))
         self.title.setText(QCoreApplication.translate(
             "Dialog", u"Choose a digital currency to pay:", None))
         self.b_1.setText("")
@@ -209,17 +148,12 @@ class Ui_Select_Coin(QDialog):
         self.b_6.setText("")
         self.b_7.setText("")
         self.b_8.setText("")
-        self.b_12.setText("")
         self.b_9.setText("")
-        self.b_10.setText("")
-        self.b_11.setText("")
-        self.b_13.setText("")
-        self.b_14.setText("")
-        self.b_15.setText("")
-        self.b_16.setText("")
         self.b_back.setText("")
+        self.l_selected_coin.setText("")
         self.b_next.setText("")
     # retranslateUi
+
         self.events()
         self.set_images()
         self.set_CSS_style()
@@ -273,7 +207,7 @@ class Ui_Select_Coin(QDialog):
         for i, name in enumerate(the_coins, start=1):
             button = getattr(self, f"b_{i}")
             button.clicked.connect(
-                lambda checked, c=name: self.l_selected_coin.setText(c))
+                lambda _, c=name: self.l_selected_coin.setText(c))
 
     def set_images(self):
         show_image([self.b_back],
