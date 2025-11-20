@@ -127,6 +127,26 @@ def get_latest_key_data():
             vars.price_decimals[vars.the_coins[7]] = line
         elif num == 53:
             vars.price_decimals[vars.the_coins[8]] = line
+        elif num == 54:
+            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[0]] = line
+        elif num == 55:
+            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[1]] = line
+        elif num == 56:
+            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[2]] = line
+        elif num == 57:
+            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[3]] = line
+        elif num == 58:
+            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[4]] = line
+        elif num == 59:
+            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[5]] = line
+        elif num == 60:
+            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[6]] = line
+        elif num == 61:
+            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[7]] = line
+        elif num == 62:
+            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[8]] = line
+        elif num == 63:
+            vars.TOTAL_TIME = int(line)
         num = num + 1
     update_urls()
     return True

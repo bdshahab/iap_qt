@@ -537,17 +537,21 @@ class Ui_Payment(QDialog):
                         loading(Global.NextWindow.UI_ABOUT)
                         return
                     else:
+                        # change updated time
+                        global TOTAL_TIME
+                        self.base_time = TOTAL_TIME = vars.TOTAL_TIME + 1
                         # set price of the app
                         the_price = APP_PRICE / \
                             float(get_coin_current_price(
                                 Global.selected_payment))
-                        self.t_price.setText(f"{the_price:.8f}")
+                        self.t_price.setText(format_with_separator(the_price, int(
+                            vars.price_decimals[Global.selected_payment]), ""))
                         datetime_data = get_datetime_data()
                         global first_clock_now, first_date_now
                         first_clock_now = get_current_time(datetime_data)
                         first_date_now = get_current_date(datetime_data)
 
-                        if the_price < MINIMUM_LIMIT_PRICE:
+                        if the_price < float(MINIMUM_LIMIT_PRICE[Global.selected_payment]):
                             show_the_message(
                                 self.TITLE_ANOTHER_CURRENCY, self.MESSAGE_ANOTHER_CURRENCY, QMessageBox.Warning)
                             self.goto_select_coin()

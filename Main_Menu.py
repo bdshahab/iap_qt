@@ -30,7 +30,7 @@ class Ui_MainWindow(QMainWindow):
         self.situation_button = QPushButton(self.centralwidget)
         self.situation_button.setObjectName(u"situation_button")
         sizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)  # TODO
+            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(

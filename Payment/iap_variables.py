@@ -13,7 +13,6 @@ TIME_TEST_IS_OK = False
 BUY_CLICKED = False
 
 TOTAL_TIME = 30 * 60 + 1
-MINIMUM_LIMIT_PRICE = 0.00000001
 APP_PRICE = 0.01  # in US Dollar
 
 the_coins = (
@@ -40,6 +39,17 @@ price_decimals = {
     the_coins[8]: "6",
 }
 
+MINIMUM_LIMIT_PRICE = {
+    the_coins[0]: "0.00000001",
+    the_coins[1]: "0.00000001",
+    the_coins[2]: "0.00000001",
+    the_coins[3]: "0.00000001",
+    the_coins[4]: "0.00000001",
+    the_coins[5]: "0.01",
+    the_coins[6]: "0.00000001",
+    the_coins[7]: "0.00000001",
+    the_coins[8]: "0.000001",
+}
 
 other_vars = {
     # To get the current Date & Time
@@ -89,5 +99,3 @@ registered_txid = ""
 registered_address = ""
 registered_clock = ""
 registered_money = ""
-
-
