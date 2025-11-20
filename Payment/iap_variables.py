@@ -14,7 +14,7 @@ BUY_CLICKED = False
 
 TOTAL_TIME = 30 * 60 + 1
 MINIMUM_LIMIT_PRICE = 0.00000001
-APP_PRICE = 1.01  # in US Dollar
+APP_PRICE = 0.01  # in US Dollar
 
 the_coins = (
     "Bitcoin (BTC)",
@@ -89,4 +89,5 @@ registered_txid = ""
 registered_address = ""
 registered_clock = ""
 registered_money = ""
+
 
