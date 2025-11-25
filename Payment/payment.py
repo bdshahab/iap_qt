@@ -1,6 +1,8 @@
+from decimal import Decimal
 import time
 from PySide6.QtCore import (
     QCoreApplication, QMetaObject, QTimer, QElapsedTimer)
+from PySide6.QtGui import QCursor, QDesktopServices
 from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLineEdit,
                                QSizePolicy, QVBoxLayout, QMessageBox)
 
@@ -196,7 +198,6 @@ class Ui_Payment(QDialog):
     # setupUi
 
     def retranslateUi(self, Form):
-        self.setWindowIcon(QIcon("About/Photos/icon.png"))
         self.setWindowTitle("Payment")
         self.icon.setText("")
         self.title.setText(QCoreApplication.translate(
@@ -218,11 +219,11 @@ class Ui_Payment(QDialog):
         self.b_copyall.setText("")
         self.b_buy.setText("")
     # retranslateUi
-        self.events()
+        self.set_custom_text()
         self.set_images()
         self.set_CSS_style()
         self.set_data()
-        self.set_custom_text()
+        self.events()
 
     def set_custom_text(self):
         self.setWindowTitle(custom_texts[4])
@@ -320,13 +321,22 @@ class Ui_Payment(QDialog):
         self.msg = None
         self.timer = QTimer()
         self.elapsed_timer = QElapsedTimer()
-        self.base_time = TOTAL_TIME
+        self.base_time = TOTAL_TIME[0]
 
         self.start_time()
+
+    def search_term(self, term):
+        """Open browser and search for the term"""
+        search_url = f"https://duckduckgo.com/?q={term}"
+        QDesktopServices.openUrl(search_url)
 
     def set_images(self):
         img_size = int(Global.img_size * 0.8)
         self.icon.setToolTip(str(Global.selected_payment))
+        self.setWindowIcon(QIcon("About/Photos/icon.png"))
+        self.icon.setCursor(QCursor(Qt.PointingHandCursor))
+        self.icon.mousePressEvent = lambda _: self.search_term(
+            Global.selected_payment)
         show_image([self.icon],
                    [addr.cryptos.get(Global.selected_payment)],
                    [(img_size, img_size)])
@@ -497,7 +507,7 @@ class Ui_Payment(QDialog):
         self.timer.timeout.connect(self.updateTime)
 
         self.elapsed_timer = QElapsedTimer()
-        self.base_time = TOTAL_TIME
+        self.base_time = TOTAL_TIME[0]
         self.time.setText(for_time.get_display_time(self.base_time))
         self.reset_timer()
 
@@ -510,12 +520,12 @@ class Ui_Payment(QDialog):
         But if the window freezes, it will not run, and time will fall behind in real time!
         So we use real-time difference to prevent that problem.
         """
-        self.base_time = TOTAL_TIME - \
+        self.base_time = TOTAL_TIME[0] - \
             (int(time.time()) - for_time.start_time_in_system)
         self.time.setText(for_time.get_display_time(self.base_time))
-        if self.base_time > 2 * (TOTAL_TIME / 3):
+        if self.base_time > 2 * (TOTAL_TIME[0] / 3):
             self.time.setStyleSheet("color: #0000ff;")
-        elif self.base_time > (TOTAL_TIME / 3):
+        elif self.base_time > (TOTAL_TIME[0] / 3):
             self.time.setStyleSheet("color: #14992f;")
         else:
             self.time.setStyleSheet("color: #ff0000;")
@@ -538,12 +548,14 @@ class Ui_Payment(QDialog):
                         return
                     else:
                         # change updated time
-                        global TOTAL_TIME
-                        self.base_time = TOTAL_TIME = vars.TOTAL_TIME + 1
+                        self.base_time = TOTAL_TIME[0] + 1
                         # set price of the app
                         the_price = APP_PRICE / \
                             float(get_coin_current_price(
                                 Global.selected_payment))
+                        the_price = Decimal(the_price)
+                        # Automatically handles full decimal witout scientific (e)
+                        the_price = format(the_price, 'f')
                         self.t_price.setText(format_with_separator(the_price, int(
                             vars.price_decimals[Global.selected_payment]), ""))
                         datetime_data = get_datetime_data()
@@ -551,9 +563,9 @@ class Ui_Payment(QDialog):
                         first_clock_now = get_current_time(datetime_data)
                         first_date_now = get_current_date(datetime_data)
 
-                        if the_price < float(MINIMUM_LIMIT_PRICE[Global.selected_payment]):
-                            show_the_message(
-                                self.TITLE_ANOTHER_CURRENCY, self.MESSAGE_ANOTHER_CURRENCY, QMessageBox.Warning)
+                        if Decimal(the_price) < Decimal(MINIMUM_LIMIT_PRICE[Global.selected_payment]):
+                            Global.show_error(
+                                self.TITLE_ANOTHER_CURRENCY, self.MESSAGE_ANOTHER_CURRENCY, the_critical=True)
                             self.goto_select_coin()
                         elif TESTING:
                             print("First Time format: " + first_clock_now)

@@ -11,7 +11,7 @@ DEFAULT_PRICE_KEYWORD = "default%20prices/"
 DEFAULT_PRICE_SUFFIX = ".txt"
 KEY_DATA_SITE = GITHUB + "key_data.txt"
 # updatable key data
-IAP_VERSION = "5"
+IAP_VERSION = "7"
 
 
 def get_latest_key_data():
@@ -146,7 +146,7 @@ def get_latest_key_data():
         elif num == 62:
             vars.MINIMUM_LIMIT_PRICE[vars.the_coins[8]] = line
         elif num == 63:
-            vars.TOTAL_TIME = int(line)
+            vars.TOTAL_TIME[0] = int(line)
         num = num + 1
     update_urls()
     return True
@@ -338,13 +338,25 @@ def format_with_separator(number, decimal_places=8, separator=','):
     return formatted
 
 
+def format_with_separator_without_extra_zeros_in_right(number, decimal_places=8, separator=','):
+    number = float(str(number))
+    formatted = f"{number:,.{decimal_places}f}"
+    formatted = formatted.replace(',', separator)
+    try:
+        while formatted[-1] == "0" or formatted[-1] == ".":
+            formatted = formatted[:-1]
+    except Exception:
+        formatted = "0"
+    return formatted
+
+
 def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date, the_first_time, the_last_time):
     try:
         the_txid_data = get_txid_data(the_coin, the_txid)
         the_time = get_registered_clock(the_txid_data)
         if not (check_address_in_txid_data(the_coin, the_txid_data)):
             return "ADDRESS"
-    except Exception:
+    except Exception as e:
         return "ADDRESS"
     try:
         result_first_date = (check_date_in_txid_data(
@@ -368,9 +380,12 @@ def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date,
                     the_price, vars.price_decimals[vars.the_coins[i]], vars.other_vars["PRICE_SEPARATOR"])
                 break
         # Now we could check the price in the website
-        if not (check_price_in_txid_data(the_price, the_txid_data)):
+        # with and without extra zeros
+        the_price_without_extra_zeros_in_right = format_with_separator_without_extra_zeros_in_right(
+            the_price, vars.price_decimals[vars.the_coins[i]], vars.other_vars["PRICE_SEPARATOR"])
+        if not (check_price_in_txid_data(the_price_without_extra_zeros_in_right, the_txid_data) or check_price_in_txid_data(the_price, the_txid_data)):
             return "PRICE"
-    except Exception as e:
+    except Exception:
         return "PRICE"
     try:
         if not (check_txid_in_txid_data(the_txid, the_txid_data)):
