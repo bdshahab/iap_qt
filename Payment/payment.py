@@ -520,17 +520,20 @@ class Ui_Payment(QDialog):
         But if the window freezes, it will not run, and time will fall behind in real time!
         So we use real-time difference to prevent that problem.
         """
-        self.base_time = TOTAL_TIME[0] - \
-            (int(time.time()) - for_time.start_time_in_system)
-        self.time.setText(for_time.get_display_time(self.base_time))
-        if self.base_time > 2 * (TOTAL_TIME[0] / 3):
-            self.time.setStyleSheet("color: #0000ff;")
-        elif self.base_time > (TOTAL_TIME[0] / 3):
-            self.time.setStyleSheet("color: #14992f;")
-        else:
-            self.time.setStyleSheet("color: #ff0000;")
-        if self.base_time < 0:
-            self.goto_select_coin()
+        try:
+            self.base_time = TOTAL_TIME[0] - \
+                (int(time.time()) - for_time.start_time_in_system)
+            self.time.setText(for_time.get_display_time(self.base_time))
+            if self.base_time > 2 * (TOTAL_TIME[0] / 3):
+                self.time.setStyleSheet("color: #0000ff;")
+            elif self.base_time > (TOTAL_TIME[0] / 3):
+                self.time.setStyleSheet("color: #14992f;")
+            else:
+                self.time.setStyleSheet("color: #ff0000;")
+            if self.base_time < 0:
+                self.goto_select_coin()
+        except Exception:
+            pass
 
     def start_timer(self):
         if not self.timer.isActive():
