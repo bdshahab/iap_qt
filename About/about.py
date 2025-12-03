@@ -717,7 +717,7 @@ class Ui_About(QDialog):
                    [r"About\Photos\social media\producthunt.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_29],
-                   [r"About\Photos\social media\reddit.png"],
+                   [r"About\Photos\social media\quora.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_30],
                    [r"About\Photos\social media\spoutible.png"],
