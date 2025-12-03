@@ -528,7 +528,7 @@ class Ui_About(QDialog):
         self.link_b_24 = "https://odysee.com/@bdshahab"
         self.link_b_25 = "https://www.pinterest.com/bdshahab"
         self.link_b_26 = "https://primal.net/p/npub1lu5m9cjqnyaqay0uc77t526qjtkx5qu8qxe8l2kqrflmagac3c8q7g8nu5"
-        self.link_b_27 = "https://www.reddit.com/user/bdshahab"
+        self.link_b_27 = "https://www.quora.com/profile/Shahab-Baradaran-Dilmaghani"
         self.link_b_28 = "https://rumble.com/c/c-1832445/videos"
         self.link_b_29 = "https://spoutible.com/bdshahab"
         self.link_b_30 = "https://steemit.com/@bdshahab"
