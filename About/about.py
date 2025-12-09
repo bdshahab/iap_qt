@@ -502,42 +502,42 @@ class Ui_About(QDialog):
     def init(self):
         self.link_logo = "https://duckduckgo.com/?q=bdshahab"
         self.link_license = "https://opensource.org/license/mit"
-        self.link_b_1 = "https://bdshahab.blogspot.com"
-        self.link_b_2 = "https://bsky.app/profile/bdshahab.bsky.social"
-        self.link_b_3 = "https://www.chess.com/member/bdshahab1982"
-        self.link_b_4 = "https://app.clouthub.com/#/users/u/bdshahab"
-        self.link_b_5 = "https://diamondapp.com/u/bdshahab"
-        self.link_b_6 = "https://diasp.org/u/bdshahab"
+        self.link_b_1 = "https://www.aparat.com/bdshahab"
+        self.link_b_2 = "https://www.apsense.com/user/bdshahab"
+        self.link_b_3 = "https://bdshahab.blogspot.com"
+        self.link_b_4 = "https://bdshahab.blogix.ir"
+        self.link_b_5 = "https://bsky.app/profile/bdshahab.bsky.social"
+        self.link_b_6 = "https://diamondapp.com/u/bdshahab"
         self.link_b_7 = "https://discord.gg/xgMdTXBhnE"
-        self.link_b_8 = "https://www.facebook.com/shahab.baradaran.dilmaghani"
-        self.link_b_9 = "https://www.flickr.com/photos/bdshahab"
-        self.link_b_10 = "https://flipboard.com/@bdshahab1982"
-        self.link_b_11 = "https://gab.com/bdshahab"
-        self.link_b_12 = "https://gettr.com/user/bdshahab"
+        self.link_b_8 = "https://www.facebook.com/bdshahab1982"
+        self.link_b_9 = "https://flipboard.com/@bdshahab1982"
+        self.link_b_10 = "https://forem.com/bdshahab"
+        self.link_b_11 = "https://gettr.com/user/bdshahab"
+        self.link_b_12 = "https://hashnode.com/@bdshahab"
         self.link_b_13 = "https://www.instagram.com/bdshahab1982"
         self.link_b_14 = "https://bdshahab.itch.io"
         self.link_b_15 = "https://justpaste.it/u/bdshahab"
-        self.link_b_16 = "https://lichess.org/@/bdshahab"
-        self.link_b_17 = "https://www.linkedin.com/company/bdshahab"
-        self.link_b_18 = "https://bdshahab1982.livejournal.com"
+        self.link_b_16 = "https://www.linkedin.com/company/bdshahab"
+        self.link_b_17 = "https://bdshahab1982.livejournal.com"
+        self.link_b_18 = "https://lnk.bio/bdshahab"
         self.link_b_19 = "https://mastodon.social/@bdshahab"
         self.link_b_20 = "https://matrix.to/#/#bdshahab:matrix.org"
         self.link_b_21 = "https://bdshahab.medium.com"
         self.link_b_22 = "https://mewe.com/bdshahab"
         self.link_b_23 = "https://www.minds.com/bdshahab"
         self.link_b_24 = "https://odysee.com/@bdshahab"
-        self.link_b_25 = "https://www.pinterest.com/bdshahab"
-        self.link_b_26 = "https://primal.net/p/npub1lu5m9cjqnyaqay0uc77t526qjtkx5qu8qxe8l2kqrflmagac3c8q7g8nu5"
-        self.link_b_27 = "https://www.quora.com/profile/Shahab-Baradaran-Dilmaghani"
-        self.link_b_28 = "https://rumble.com/c/c-1832445/videos"
+        self.link_b_25 = "https://app.parler.com/bdshahab"
+        self.link_b_26 = "https://www.pinterest.com/bdshahab"
+        self.link_b_27 = "https://primal.net/p/npub1lu5m9cjqnyaqay0uc77t526qjtkx5qu8qxe8l2kqrflmagac3c8q7g8nu5"
+        self.link_b_28 = "https://www.producthunt.com/@bdshahab"
         self.link_b_29 = "https://spoutible.com/bdshahab"
         self.link_b_30 = "https://steemit.com/@bdshahab"
         self.link_b_31 = "https://t.me/bd_shahab"
-        self.link_b_32 = "https://the-dots.com/users/shahab-baradaran-dilmaghani-1291359"
-        self.link_b_33 = "https://www.threads.net/@bdshahab1982"
-        self.link_b_34 = "https://www.tiktok.com/@bdshahab"
-        self.link_b_35 = "https://bdshahab.tumblr.com"
-        self.link_b_36 = "https://vk.com/bdshahab"
+        self.link_b_32 = "https://www.threads.com/@bdshahab1982"
+        self.link_b_33 = "https://www.tiktok.com/@bdshahab1982"
+        self.link_b_34 = "https://bdshahab.tumblr.com"
+        self.link_b_35 = "https://vk.com/bdshahab"
+        self.link_b_36 = "https://whatsapp.com/channel/0029VbBIpNP1XquP4Lz4eZ3M"
         self.link_b_37 = "https://bdsh.wordpress.com"
         self.link_b_38 = "https://x.com/bdshahab"
         self.link_b_39 = "https://www.xing.com/profile/Shahab_BaradaranDilmaghani"
@@ -633,28 +633,28 @@ class Ui_About(QDialog):
                    [r"About\Photos\license.png"],
                    [(Global.img_size, Global.img_size)])
         show_image([self.b_1],
-                   [r"About\Photos\social media\apsense.png"],
+                   [r"About\Photos\social media\aparat.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_2],
-                   [r"About\Photos\social media\blogger.png"],
+                   [r"About\Photos\social media\apsense.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_3],
-                   [r"About\Photos\social media\blue_sky.png"],
+                   [r"About\Photos\social media\blogger.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_4],
-                   [r"About\Photos\social media\chess_com.png"],
+                   [r"About\Photos\social media\blogix.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_5],
-                   [r"About\Photos\social media\diamondapp.png"],
+                   [r"About\Photos\social media\blue_sky.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_6],
-                   [r"About\Photos\social media\discord.png"],
+                   [r"About\Photos\social media\diamondapp.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_7],
-                   [r"About\Photos\social media\facebook.png"],
+                   [r"About\Photos\social media\discord.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_8],
-                   [r"About\Photos\social media\flickr.png"],
+                   [r"About\Photos\social media\facebook.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_9],
                    [r"About\Photos\social media\flipboard.png"],
@@ -678,13 +678,13 @@ class Ui_About(QDialog):
                    [r"About\Photos\social media\justpaste_it.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_16],
-                   [r"About\Photos\social media\lichess.png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_17],
                    [r"About\Photos\social media\linkedin.png"],
                    [(ico_size, ico_size)])
-        show_image([self.b_18],
+        show_image([self.b_17],
                    [r"About\Photos\social media\livejournal.png"],
+                   [(ico_size, ico_size)])
+        show_image([self.b_18],
+                   [r"About\Photos\social media\lnk_bio.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_19],
                    [r"About\Photos\social media\Mastodon.png"],
@@ -717,28 +717,28 @@ class Ui_About(QDialog):
                    [r"About\Photos\social media\producthunt.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_29],
-                   [r"About\Photos\social media\quora.png"],
-                   [(ico_size, ico_size)])
-        show_image([self.b_30],
                    [r"About\Photos\social media\spoutible.png"],
                    [(ico_size, ico_size)])
-        show_image([self.b_31],
+        show_image([self.b_30],
                    [r"About\Photos\social media\steemit.png"],
                    [(ico_size, ico_size)])
-        show_image([self.b_32],
+        show_image([self.b_31],
                    [r"About\Photos\social media\telegram.png"],
                    [(ico_size, ico_size)])
-        show_image([self.b_33],
+        show_image([self.b_32],
                    [r"About\Photos\social media\threads.png"],
                    [(ico_size, ico_size)])
-        show_image([self.b_34],
+        show_image([self.b_33],
                    [r"About\Photos\social media\tiktok.png"],
                    [(ico_size, ico_size)])
-        show_image([self.b_35],
+        show_image([self.b_34],
                    [r"About\Photos\social media\tumblr.png"],
                    [(ico_size, ico_size)])
-        show_image([self.b_36],
+        show_image([self.b_35],
                    [r"About\Photos\social media\vk.png"],
+                   [(ico_size, ico_size)])
+        show_image([self.b_36],
+                   [r"About\Photos\social media\whatsapp.png"],
                    [(ico_size, ico_size)])
         show_image([self.b_37],
                    [r"About\Photos\social media\wordpress.png"],
