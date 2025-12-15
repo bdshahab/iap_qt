@@ -162,8 +162,8 @@ def detect_tor():
 def get_with_fallback(url, timeout=(5, 10)):
     proxy_chain = [
         None,
+        detect_tor(),
         detect_system_proxy(),
-        detect_tor()
     ]
 
     last_exc = None
@@ -549,5 +549,6 @@ def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date,
             return "TXID"
     except Exception:
         return "TXID"
+
 
     return "OK"
