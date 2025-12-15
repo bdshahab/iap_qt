@@ -3,6 +3,12 @@ import requests
 from Payment.addresses import *
 import Payment.iap_variables as vars
 
+import sys
+import os
+import socket
+import subprocess
+import winreg
+
 # this one depends on selected coin
 price_site_middle = ""
 
@@ -14,9 +20,166 @@ KEY_DATA_SITE = GITHUB + "key_data.txt"
 IAP_VERSION = "7"
 
 
+def detect_system_proxy():
+    proxies = {}
+
+    for var in ["http_proxy", "https_proxy", "HTTP_PROXY", "HTTPS_PROXY"]:
+        if var in os.environ:
+            proxies["http"] = os.environ[var]
+            proxies["https"] = os.environ[var]
+            return proxies
+
+    if sys.platform == 'darwin':
+        try:
+            output = subprocess.check_output(["scutil", "--proxy"], text=True)
+            if "HTTPEnable : 1" in output:
+                host = output.split("HTTPProxy : ")[1].split("\n")[0].strip()
+                port = output.split("HTTPPort : ")[1].split("\n")[0].strip()
+                if host and port:
+                    return {
+                        "http": f"http://{host}:{port}",
+                        "https": f"http://{host}:{port}"
+                    }
+        except:
+            pass
+
+    if os.name == 'nt':
+        try:
+            reg = winreg.OpenKey(
+                winreg.HKEY_CURRENT_USER,
+                r"Software\Microsoft\Windows\CurrentVersion\Internet Settings"
+            )
+            enabled, _ = winreg.QueryValueEx(reg, "ProxyEnable")
+            if enabled:
+                server, _ = winreg.QueryValueEx(reg, "ProxyServer")
+                if server:
+                    return {
+                        "http": f"http://{server}",
+                        "https": f"http://{server}"
+                    }
+        except:
+            pass
+
+    try:
+        mode = subprocess.check_output(
+            ["gsettings", "get", "org.gnome.system.proxy", "mode"],
+            text=True
+        ).strip("' \n")
+
+        if mode == "manual":
+            host = subprocess.check_output(
+                ["gsettings", "get", "org.gnome.system.proxy.http", "host"],
+                text=True
+            ).strip("' \n")
+            port = subprocess.check_output(
+                ["gsettings", "get", "org.gnome.system.proxy.http", "port"],
+                text=True
+            ).strip()
+
+            if host and port != "0":
+                return {
+                    "http": f"http://{host}:{port}",
+                    "https": f"http://{host}:{port}",
+                }
+    except:
+        pass
+
+    try:
+        mode = subprocess.check_output(
+            ["kreadconfig5", "--file", "kioslaverc", "--group", "Proxy Settings", "--key", "ProxyType"],
+            text=True
+        ).strip()
+
+        if mode == "1":
+            http_proxy = subprocess.check_output(
+                ["kreadconfig5", "--file", "kioslaverc", "--group", "Proxy Settings", "--key", "httpProxy"],
+                text=True
+            ).strip()
+
+            if http_proxy:
+                parts = http_proxy.split()
+                if len(parts) == 2:
+                    host = parts[0].split("://")[1]
+                    port = parts[1]
+                    return {
+                        "http": f"http://{host}:{port}",
+                        "https": f"http://{host}:{port}"
+                    }
+    except:
+        pass
+
+    try:
+        active_conns = subprocess.check_output(
+            ["nmcli", "-t", "-f", "NAME", "con", "show", "--active"],
+            text=True
+        ).strip()
+
+        if active_conns:
+            active = active_conns.split('\n')[0]
+            full_output = subprocess.check_output(
+                ["nmcli", "con", "show", active],
+                text=True
+            )
+
+            proxy_method = None
+            http_proxy = None
+            for line in full_output.splitlines():
+                if line.startswith('proxy.method:'):
+                    proxy_method = line.split(':', 1)[1].strip()
+                elif line.startswith('proxy.http-proxy:'):
+                    http_proxy = line.split(':', 1)[1].strip()
+
+            if proxy_method == 'manual' and http_proxy:
+                return {
+                    "http": f"http://{http_proxy}",
+                    "https": f"http://{http_proxy}"
+                }
+    except:
+        pass
+
+    return None
+
+
+def is_port_open(port, timeout=0.2):
+    try:
+        s = socket.socket()
+        s.settimeout(timeout)
+        s.connect(("127.0.0.1", port))
+        s.close()
+        return True
+    except:
+        return False
+
+
+def detect_tor():
+    if is_port_open(9150):
+        return {"http": "socks5h://127.0.0.1:9150", "https": "socks5h://127.0.0.1:9150"}
+    if is_port_open(9050):
+        return {"http": "socks5h://127.0.0.1:9050", "https": "socks5h://127.0.0.1:9050"}
+    return None
+
+
+def get_with_fallback(url, timeout=(5, 10)):
+    proxy_chain = [
+        None,
+        detect_system_proxy(),
+        detect_tor()
+    ]
+
+    last_exc = None
+    for proxy in proxy_chain:
+        try:
+            response = requests.get(url, proxies=proxy, timeout=timeout)
+            response.raise_for_status()
+            return response
+        except Exception as e:
+            last_exc = e
+
+    raise last_exc or ValueError("All connection attempts failed")
+
+
 def get_latest_key_data():
-    response = requests.get(KEY_DATA_SITE)
-    response.raise_for_status()  # Raise an error for bad status codes
+    response = get_with_fallback(KEY_DATA_SITE)
     the_result = response.text
     num = 1
     for line in the_result.split("\n"):
@@ -159,8 +322,7 @@ def get_just_number(text_num: str):
 
 def get_coin_default_price(the_coin):
     the_url = GITHUB + DEFAULT_PRICE_KEYWORD + the_coin + DEFAULT_PRICE_SUFFIX
-    response = requests.get(the_url)
-    response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+    response = get_with_fallback(the_url)
     return response.text  # Return the content as a string
 
 
@@ -187,8 +349,7 @@ def get_coin_symbol(the_coin):
 
 
 def get_current_price_from_the_url(the_url):
-    response = requests.get(the_url)
-    response.raise_for_status()  # Raise an error for bad status codes
+    response = get_with_fallback(the_url)
 
     # Search for the regex pattern in the HTML text
     match = re.search(vars.other_vars["PRICE_SITE_REGEX"], response.text)
@@ -213,8 +374,7 @@ def get_coin_current_price(the_coin):
 
 def get_time():
     the_result = ""
-    response = requests.get(vars.other_vars["DATE_TIME_SITE"])
-    response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+    response = get_with_fallback(vars.other_vars["DATE_TIME_SITE"])
     # Search for the regex pattern in the HTML text
     match = re.search(vars.other_vars["TIME_REGEX"], response.text)
     if match:
@@ -225,8 +385,7 @@ def get_time():
 
 def get_date():
     the_result = ""
-    response = requests.get(vars.other_vars["DATE_TIME_SITE"])
-    response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+    response = get_with_fallback(vars.other_vars["DATE_TIME_SITE"])
     # Search for the regex pattern in the HTML text
     match = re.search(vars.other_vars["DATE_REGEX"], response.text)
     if match:
@@ -247,15 +406,13 @@ def get_verify_url_coin(the_coin):
 
 def get_txid_data(the_coin, the_txid):
     the_url_txid = get_verify_url_coin(the_coin) + the_txid
-    response = requests.get(the_url_txid)
-    response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+    response = get_with_fallback(the_url_txid)
     the_result = response.text
     return the_result
 
 
 def get_datetime_data():
-    response = requests.get(vars.other_vars["DATE_TIME_SITE"])
-    response.raise_for_status()  # Raise an error for bad status codes
+    response = get_with_fallback(vars.other_vars["DATE_TIME_SITE"])
     the_result = response.text
     return the_result
 
@@ -356,7 +513,7 @@ def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date,
         the_time = get_registered_clock(the_txid_data)
         if not (check_address_in_txid_data(the_coin, the_txid_data)):
             return "ADDRESS"
-    except Exception as e:
+    except Exception:
         return "ADDRESS"
     try:
         result_first_date = (check_date_in_txid_data(
