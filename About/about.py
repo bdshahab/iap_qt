@@ -6,8 +6,7 @@ from PySide6.QtWidgets import (
 from tools.Centralization import center_window
 from tools.for_images import show_image
 import webbrowser
-import requests
-from Payment.web_functions import GITHUB
+from Payment.web_functions import GITHUB, get_with_fallback
 
 import Global
 
@@ -546,7 +545,7 @@ class Ui_About(QDialog):
     def update_links(self):
         try:
             LINKS_SITE = GITHUB + "links.txt"
-            response = requests.get(LINKS_SITE)
+            response = get_with_fallback(LINKS_SITE)
             # response.raise_for_status()  # Raise an error for bad status codes
             the_result = response.text
             list_of_links = []

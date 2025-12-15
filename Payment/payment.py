@@ -391,7 +391,7 @@ class Ui_Payment(QDialog):
         loading(Global.NextWindow.UI_SELECT_COIN)
 
     def get_datetime_data(self):
-        response = requests.get(other_vars['DATE_TIME_SITE'])
+        response = get_with_fallback(other_vars['DATE_TIME_SITE'])
         response.raise_for_status()  # Raise an error for bad status codes
         the_result = response.text
         return the_result
