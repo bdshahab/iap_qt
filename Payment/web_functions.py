@@ -7,7 +7,6 @@ import sys
 import os
 import socket
 import subprocess
-import winreg
 
 # this one depends on selected coin
 price_site_middle = ""
@@ -45,6 +44,7 @@ def detect_system_proxy():
 
     if os.name == 'nt':
         try:
+            import winreg
             reg = winreg.OpenKey(
                 winreg.HKEY_CURRENT_USER,
                 r"Software\Microsoft\Windows\CurrentVersion\Internet Settings"
@@ -552,3 +552,4 @@ def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date,
 
 
     return "OK"
+
