@@ -55,8 +55,6 @@ class Ui_Bought(QDialog):
     def retranslateUi(self, Dialog):
         self.setWindowIcon(QIcon("About/Photos/icon.png"))
         self.setWindowTitle("Bought")
-        from tools.Centralization import center_window
-        center_window(self)
 
         self.l1.setText(QCoreApplication.translate(
             "Dialog", u"Congratulations!", None))
@@ -131,3 +129,4 @@ class Ui_Bought(QDialog):
             self.close_window()
         except Exception:
             pass
+
