@@ -16,7 +16,7 @@ DEFAULT_PRICE_KEYWORD = "default%20prices/"
 DEFAULT_PRICE_SUFFIX = ".txt"
 KEY_DATA_SITE = GITHUB + "key_data.txt"
 # updatable key data
-IAP_VERSION = "7"
+IAP_VERSION = "8"
 
 
 def detect_system_proxy():
@@ -552,4 +552,5 @@ def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date,
 
 
     return "OK"
+
 
