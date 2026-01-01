@@ -39,7 +39,7 @@ def detect_system_proxy():
                         "http": f"http://{host}:{port}",
                         "https": f"http://{host}:{port}"
                     }
-        except:
+        except Exception:
             pass
 
     if os.name == 'nt':
@@ -57,7 +57,7 @@ def detect_system_proxy():
                         "http": f"http://{server}",
                         "https": f"http://{server}"
                     }
-        except:
+        except Exception:
             pass
 
     try:
@@ -81,7 +81,7 @@ def detect_system_proxy():
                     "http": f"http://{host}:{port}",
                     "https": f"http://{host}:{port}",
                 }
-    except:
+    except Exception:
         pass
 
     try:
@@ -105,7 +105,7 @@ def detect_system_proxy():
                         "http": f"http://{host}:{port}",
                         "https": f"http://{host}:{port}"
                     }
-    except:
+    except Exception:
         pass
 
     try:
@@ -134,7 +134,7 @@ def detect_system_proxy():
                     "http": f"http://{http_proxy}",
                     "https": f"http://{http_proxy}"
                 }
-    except:
+    except Exception:
         pass
 
     return None
@@ -147,7 +147,7 @@ def is_port_open(port, timeout=0.2):
         s.connect(("127.0.0.1", port))
         s.close()
         return True
-    except:
+    except Exception:
         return False
 
 
@@ -536,7 +536,7 @@ def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date,
                 the_price = format_with_separator(
                     the_price, vars.price_decimals[vars.the_coins[i]], vars.other_vars["PRICE_SEPARATOR"])
                 break
-        # Now we could check the price in the website
+        # Now we can check the price on the website
         # with and without extra zeros
         the_price_without_extra_zeros_in_right = format_with_separator_without_extra_zeros_in_right(
             the_price, vars.price_decimals[vars.the_coins[i]], vars.other_vars["PRICE_SEPARATOR"])
@@ -552,5 +552,3 @@ def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date,
 
 
     return "OK"
-
-
