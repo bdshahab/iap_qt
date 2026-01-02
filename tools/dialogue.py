@@ -6,8 +6,8 @@ from PySide6.QtGui import QIcon
 from Payment.language import custom_texts
 
 
-def show_the_message(title, message, icon_type):
-    msg = QMessageBox()
+def show_the_message(title, message, icon_type, parent=None):
+    msg = QMessageBox(parent)
     msg.setWindowTitle(title)
     msg.setText(message)
     msg.setIcon(icon_type)
