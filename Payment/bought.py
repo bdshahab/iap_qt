@@ -10,8 +10,9 @@ from Payment.language import custom_texts
 
 
 class Ui_Bought(QDialog):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setFocusPolicy(Qt.StrongFocus)
         self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.vbox = QVBoxLayout()
