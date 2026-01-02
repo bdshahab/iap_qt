@@ -11,8 +11,9 @@ from Payment.language import custom_texts
 
 
 class Ui_Select_Coin(QDialog):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setFocusPolicy(Qt.StrongFocus)
         self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.title = QLabel(self)
@@ -181,15 +182,11 @@ class Ui_Select_Coin(QDialog):
                 QPushButton {
                     background-color: white; 
                     border: 1px solid white;
-                    color: black;
                     border-radius: 10px;
-                    font-size: 25px;
-                    font-weight: bold;
                 }
                 QPushButton:hover {
                     background-color: #858585; 
                     border: 1px solid white;
-                    color: white;
                     border-radius: 10px;
                 }
                 QPushButton:pressed {
