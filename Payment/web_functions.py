@@ -550,5 +550,4 @@ def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date,
     except Exception:
         return "TXID"
 
-
     return "OK"
