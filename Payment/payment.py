@@ -24,8 +24,9 @@ last_date_now = ""
 
 
 class Ui_Payment(QDialog):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setFocusPolicy(Qt.StrongFocus)
         self.elapsed_timer = None
         self.timer = None
         self.msg = None
@@ -287,8 +288,6 @@ class Ui_Payment(QDialog):
                     border: 1px solid #cbcbcb;
                     color: black;
                     border-radius: 10px;
-                    font-size: 25px;
-                    font-weight: bold;
                 }
                 QPushButton:hover {
                     background-color: #858585;
@@ -298,6 +297,26 @@ class Ui_Payment(QDialog):
                 }
                 QPushButton:pressed {
                     background-color: #616161;
+                }
+                QMessageBox {
+                    background-color: white;
+                    color: black;
+                }
+                QMessageBox QLabel {
+                    color: black;
+                }
+                QMessageBox QPushButton {
+                    color: white;
+                    border: 1px solid #40b35f;
+                    background-color: #40b35f;
+                }
+                QMessageBox QPushButton:hover {
+                    border: 1px solid #7ee099;
+                    background-color: #7ee099;
+                }
+                QMessageBox QPushButton:pressed {
+                    border: 1px solid #077525;
+                    background-color: #077525;
                 }
             """)
 
@@ -317,7 +336,7 @@ class Ui_Payment(QDialog):
         self.b_copyall.clicked.connect(
             lambda: self.copyall_to_clipboard())
 
-        # We need a reference to help dialog box
+        # We need a reference to help the dialog box
         self.msg = None
         self.timer = QTimer()
         self.elapsed_timer = QElapsedTimer()
@@ -392,7 +411,6 @@ class Ui_Payment(QDialog):
 
     def get_datetime_data(self):
         response = get_with_fallback(other_vars['DATE_TIME_SITE'])
-        response.raise_for_status()  # Raise an error for bad status codes
         the_result = response.text
         return the_result
 
@@ -440,34 +458,34 @@ class Ui_Payment(QDialog):
                         return
                     elif verify_result == "ADDRESS":
                         show_the_message(
-                            self.TITLE_ANOTHER_ADDRESS, self.MESSAGE_ANOTHER_ADDRESS, QMessageBox.Warning)
+                            self.TITLE_ANOTHER_ADDRESS, self.MESSAGE_ANOTHER_ADDRESS, QMessageBox.Warning, parent=self)
                     elif verify_result == "PRICE":
                         show_the_message(
-                            self.TITLE_EXACT_PRICE, self.MESSAGE_EXACT_PRICE, QMessageBox.Warning)
+                            self.TITLE_EXACT_PRICE, self.MESSAGE_EXACT_PRICE, QMessageBox.Warning, parent=self)
                     elif verify_result == "TXID":
                         show_the_message(
-                            self.TITLE_TXID_NOT_EXIST, self.MESSAGE_TXID_NOT_EXIST, QMessageBox.Warning)
+                            self.TITLE_TXID_NOT_EXIST, self.MESSAGE_TXID_NOT_EXIST, QMessageBox.Warning, parent=self)
                     elif verify_result == "DATE":
                         show_the_message(
-                            self.TITLE_ANOTHER_DATE, self.MESSAGE_ANOTHER_DATE, QMessageBox.Warning)
+                            self.TITLE_ANOTHER_DATE, self.MESSAGE_ANOTHER_DATE, QMessageBox.Warning, parent=self)
                     elif verify_result == "TIME":
                         show_the_message(
-                            self.TITLE_ANOTHER_TIME, self.MESSAGE_ANOTHER_TIME, QMessageBox.Warning)
+                            self.TITLE_ANOTHER_TIME, self.MESSAGE_ANOTHER_TIME, QMessageBox.Warning, parent=self)
                 except ValueError:
                     show_the_message(
-                        self.TITLE_TXID_NOT_EXIST, self.MESSAGE_TXID_NOT_EXIST, QMessageBox.Warning)
+                        self.TITLE_TXID_NOT_EXIST, self.MESSAGE_TXID_NOT_EXIST, QMessageBox.Warning, parent=self)
             except (requests.exceptions.ConnectionError, ValueError):
                 self.b_buy.setEnabled(True)
                 show_the_message(
-                    self.TITLE_LOST_CONNECTION, self.MESSAGE_LOST_CONNECTION, QMessageBox.Warning)
+                    self.TITLE_LOST_CONNECTION, self.MESSAGE_LOST_CONNECTION, QMessageBox.Warning, parent=self)
         else:
             self.b_buy.setEnabled(True)
             show_the_message(
-                self.TITLE_EMPTY_TXID, self.MESSAGE_EMPTY_TXID, QMessageBox.Critical)
+                self.TITLE_EMPTY_TXID, self.MESSAGE_EMPTY_TXID, QMessageBox.Critical, parent=self)
 
     def show_help(self):
         show_the_message(
-            self.TITLE_HELP, self.MESSAGE_HELP, QMessageBox.Information)
+            self.TITLE_HELP, self.MESSAGE_HELP, QMessageBox.Information, parent=self)
 
     def copy_to_clipboard(self, the_line_edit):
         # Select all text in the QLineEdit
@@ -567,15 +585,14 @@ class Ui_Payment(QDialog):
                         first_date_now = get_current_date(datetime_data)
 
                         if Decimal(the_price) < Decimal(MINIMUM_LIMIT_PRICE[Global.selected_payment]):
-                            Global.show_error(
-                                self.TITLE_ANOTHER_CURRENCY, self.MESSAGE_ANOTHER_CURRENCY, the_critical=True)
+                            show_the_message(self.TITLE_ANOTHER_CURRENCY, self.MESSAGE_ANOTHER_CURRENCY, parent=self)
                             self.goto_select_coin()
                         elif TESTING:
                             print("First Time format: " + first_clock_now)
                             print("First Date format: " + first_date_now)
                 except requests.exceptions.ConnectionError:
                     show_the_message(
-                        self.TITLE_LOST_CONNECTION, self.MESSAGE_LOST_CONNECTION, QMessageBox.Warning)
+                        self.TITLE_LOST_CONNECTION, self.MESSAGE_LOST_CONNECTION, QMessageBox.Warning, parent=self)
                     self.goto_select_coin()
 
     def reset_timer(self):
