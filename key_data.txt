@@ -1,4 +1,17 @@
 9
+https://trustwallet.com
+https://guarda.com
+https://metamask.io
+https://www.binance.com
+https://www.bybit.com
+https://www.okx.com
+https://cointiply.com
+https://www.coinpayu.com/?r=bdshahab
+https://viefaucet.com
+https://www.trustpilot.com
+https://www.scamadviser.com
+https://www.sitejabber.com
+****************************************
 https://unixtime.org
 ([0-2][0-9]:[0-5][0-9]:[0-5][0-9])
 ([0-9]{1,2}-[A-Za-z]{3}-[0-9]{4})
