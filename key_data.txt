@@ -32,4 +32,3 @@ https://unixtime.org
 Bitcoin (BTC)
 https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&precision=2
 \{"bitcoin":\{"usd":(\d+\.\d+)\}\}
-"price":\s*([-+]?\d*\.?\d+),
