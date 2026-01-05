@@ -30,7 +30,8 @@ https://unixtime.org
 %Y-%m-%d
 %H:%M:%S
 Bitcoin (BTC)
-https://coinmarketcap.com/currencies/bitcoin
+https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&precision=2
+\{"bitcoin":\{"usd":(\d+\.\d+)\}\}
 "price":\s*([-+]?\d*\.?\d+),
  
 
