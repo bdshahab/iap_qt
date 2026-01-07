@@ -27,7 +27,8 @@ iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAAAAXNSR0IB2cksfwAAAARnQU1BAACxjwv8
 https://unixtime.org
 >
 <
+Ethereum (ETH)
 Bitcoin (BTC)
-https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&precision=2
-\{"bitcoin":\{"usd":(\d+\.\d+)\}\}
-https://bitcoinblockexplorers.com/tx/
+Litecoin (LTC)
+Dash (DASH)
+Dogecoin (DOGE)
