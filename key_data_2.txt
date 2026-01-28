@@ -2,3 +2,57 @@
 1800
 {"Bitcoin (BTC)": "https://cryptorank.io/price/bitcoin", "Dash (DASH)": "https://cryptorank.io/price/dash", "Dogecoin (DOGE)": "https://cryptorank.io/price/dogecoin", "Ethereum (ETH)": "https://cryptorank.io/price/ethereum", "Litecoin (LTC)": "https://cryptorank.io/price/litecoin"}
 {"Bitcoin (BTC)": "0.00000001", "Dash (DASH)": "0.00000001", "Dogecoin (DOGE)": "0.00000001", "Ethereum (ETH)": "0.000000000000000001", "Litecoin (LTC)": "0.00000001"}
+# change updated time
+TOTAL_TIME[0] = int(data[1])
+self.base_time = TOTAL_TIME[0] + 1
+# We have to get price from json
+d = json.loads(data[2])
+# set price of the app
+response = get_with_fallback(str(d.get(Global.selected_payment)))
+the_result = response.text
+
+# Regex to find price, like "BTC Price $ 88,866"
+pattern = r"Price \$ ([0-9,]+\.?[0-9]*), Trading Volume"
+
+match = re.search(pattern, the_result)
+if match:
+    price_str = match.group(1)
+    price = get_just_number(price_str)
+    
+    the_price = APP_PRICE / float(price)
+    the_price = Decimal(the_price)
+    # Automatically handles full decimal witout scientific (e)
+    the_price = format(the_price, 'f')
+    self.t_price.setText(format_with_separator(the_price, int(
+        vars.price_decimals[Global.selected_payment]), ""))
+else:
+    raise Exception
+# Get Time
+response = get_with_fallback("https://unixtime.org")
+the_result = response.text
+pattern = r"([0-2][0-9]:[0-5][0-9]:[0-5][0-9])"
+match = re.search(pattern, the_result)
+global first_clock_now, first_date_now
+if match:
+    first_clock_now = match.group(1)
+else:
+    raise Exception
+# Get Date
+pattern = r"([0-9]{1,2}-[A-Za-z]{3}-[0-9]{4})"
+match = re.search(pattern, the_result)
+if match:
+    first_date_now = match.group(1)
+else:
+    raise Exception
+print(f"first_clock_now: {first_clock_now}")
+print(f"first_date_now: {first_date_now}")
+# Get mimimum valid amount
+the_minimum = json.loads(data[3]).get(Global.selected_payment)
+print(f"the_minimum: {the_minimum}")
+print(f"MIN: {Decimal(the_minimum)}")
+if Decimal(the_price) < Decimal(the_minimum):
+    show_the_message(self.TITLE_ANOTHER_CURRENCY, self.MESSAGE_ANOTHER_CURRENCY, parent=self)
+    self.goto_select_coin()
+elif TESTING:
+    print("First Time format: " + first_clock_now)
+    print("First Date format: " + first_date_now)
