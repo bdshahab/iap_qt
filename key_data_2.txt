@@ -1,3 +1,3 @@
 9
 1800
-https://cryptorank.io/price/bitcoin
+{"Bitcoin (BTC)": "https://cryptorank.io/price/bitcoin", "Dash (DASH)": "https://cryptorank.io/price/dash", "Dogecoin (DOGE)": "https://cryptorank.io/price/dogecoin", "Ethereum (ETH)": "https://cryptorank.io/price/ethereum", "Litecoin (LTC)": "https://cryptorank.io/price/litecoin"}
