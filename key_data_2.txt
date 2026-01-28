@@ -3,6 +3,7 @@
 {"Bitcoin (BTC)": "https://cryptorank.io/price/bitcoin", "Dash (DASH)": "https://cryptorank.io/price/dash", "Dogecoin (DOGE)": "https://cryptorank.io/price/dogecoin", "Ethereum (ETH)": "https://cryptorank.io/price/ethereum", "Litecoin (LTC)": "https://cryptorank.io/price/litecoin"}
 {"Bitcoin (BTC)": "0.00000001", "Dash (DASH)": "0.00000001", "Dogecoin (DOGE)": "0.00000001", "Ethereum (ETH)": "0.000000000000000001", "Litecoin (LTC)": "0.00000001"}
 print("start!!!")
+response = get_with_fallback(str(d.get(Global.selected_payment)))
 the_result = response.text
 # change updated time
 # Regex to find price, like "BTC Price $ 88,866"
