@@ -17,17 +17,8 @@ from tools.Centralization import center_window
 from tools.dialogue import show_the_message
 from tools.for_images import show_image
 
-# import Global
 from Payment.web_functions import selected_coin_name, selected_coin_icon, selected_coin_address
 from Payment.language import custom_texts
-
-# from tools.Centralization import center_window
-# from tools.dialogue import show_the_message
-# from tools.for_images import *
-# import tools.for_time as for_time
-# from Payment.iap_variables import *
-# from Payment.language import custom_texts
-# import json
 
 
 first_clock_now = ""
@@ -315,7 +306,6 @@ class Ui_Payment(QDialog):
         self.msg = None
         self.timer = QTimer()
         self.elapsed_timer = QElapsedTimer()
-        # TODO
         self.base_time = TOTAL_TIME[0]
 
         self.start_time()
@@ -391,7 +381,6 @@ class Ui_Payment(QDialog):
         from tools.dialogue import loading
         loading(Global.NextWindow.UI_BOUGHT)
 
-    # TODO
     def goto_bought(self):
         txid = self.t_txid.text()
         if txid:
