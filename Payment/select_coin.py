@@ -132,7 +132,7 @@ class Ui_Select_Coin(QDialog):
             self.set_images()
             self.setup_buttons()
             self.populate_coin_list()
-        except Exception as e:
+        except Exception:
             # TODO
             # Tell user connection is lost
             self.close_window()
@@ -389,4 +389,3 @@ class Ui_Select_Coin(QDialog):
                 # When price is less than MINIMUM_LIMIT_PRICE,
                 # we have to prevent the app to create another useless window for payment.
                 pass
-        print(Global.selected_payment)
