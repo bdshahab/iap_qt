@@ -332,7 +332,6 @@ def get_data_btc_doge_ltc(first_part_api_url, second_part_api_url, the_coin, the
     return the_result
 
 def verify_payment(the_coin, the_address, the_price, the_txid, the_first_date, the_last_date, the_first_time, the_last_time):
-    #!!!!!!!!!! TODO FBI
     try:
         if the_coin == "Ethereum (ETH)":
             the_address = the_address.lower()
@@ -373,7 +372,6 @@ def verify_payment(the_coin, the_address, the_price, the_txid, the_first_date, t
                 return "PRICE"
         else:
             # Other crypto goes here
-            # 
             if the_coin == "Bitcoin (BTC)":
                 the_coin = data[31]
             elif the_coin == "Dogecoin (DOGE)":

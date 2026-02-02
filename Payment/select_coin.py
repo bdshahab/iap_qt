@@ -133,8 +133,8 @@ class Ui_Select_Coin(QDialog):
             self.setup_buttons()
             self.populate_coin_list()
         except Exception:
-            # TODO
-            # Tell user connection is lost
+            show_the_message(
+                self.TITLE_LOST_CONNECTION, self.MESSAGE_LOST_CONNECTION, QMessageBox.Warning, parent=self)
             self.close_window()
 
     def populate_coin_list(self):
