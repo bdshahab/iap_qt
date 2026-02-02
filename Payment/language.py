@@ -34,4 +34,12 @@ custom_texts = [
     "Now you can use all the features of this program.",
     "You paid before!",
     "You don't need to pay again! You already bought this!",
+    "Do you need help getting cryptocurrency?",
+    "I don't have a cryptocurrency wallet",
+    "I want to buy cryptocurrency",
+    "I want to get a small amount for free",
+    "I want to check if a website is trustworthy",
+    "To pay with cryptocurrency, you need a crypto wallet, and if you don't have cryptocurrency yet, you can buy it or obtain a small amount from third-party services; we only provide suggestions and do not operate or control these services, so always verify information from multiple sources.",
+    "This payment method is temporarily unavailable while we perform maintenance. Please try again later.",
+    
 ]

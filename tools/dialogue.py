@@ -7,15 +7,56 @@ from Payment.language import custom_texts
 
 
 def show_the_message(title, message, icon_type, parent=None):
+    import Global
     msg = QMessageBox(parent)
-    msg.setWindowTitle(title)
-    msg.setText(message)
-    msg.setIcon(icon_type)
+    
+    # Set icon and title
     msg.setWindowIcon(QIcon("About/Photos/icon.png"))
-    msg.setStandardButtons(QMessageBox.Ok)
-    msg.setDefaultButton(QMessageBox.Ok)
+    msg.setWindowTitle(title)
+    
+    # Hide the default text (we'll use a custom QLabel)
+    msg.setText("")  
+    
+    msg.setIcon(icon_type)
 
-    _ = msg.exec()
+    # Add OK button
+    ok_button = msg.addButton(QMessageBox.Ok)
+    ok_button.setText((" " * 2) + "OK" + (" " * 2))
+    
+    msg.setWindowModality(Qt.ApplicationModal)
+    # ------------------------------------------------------------------
+    # Custom QLabel for the message content
+    # ------------------------------------------------------------------
+    label = QLabel(message)
+    label.setTextFormat(Qt.RichText)      # support HTML
+    label.setWordWrap(True)               # allow multi-line
+    label.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+    font = label.font()
+    font.setPointSize(24)        # ← change size here
+    # font.setBold(True)        # optional
+    label.setFont(font)
+    label.setMinimumWidth(Global.screen_width // 2)  # half of screen width
+
+    # Add QLabel to the QMessageBox layout
+    msg.layout().addWidget(label, 0, 1)  # row 0, column 1 (content area)
+    # font-size: 14px;
+    ok_button.setStyleSheet("""
+        QPushButton {
+            font-size: 34px;
+            font-weight: bold;
+            padding: 8px 22px;
+            border-radius: 6px;
+            background-color: #38d130;
+        }
+        QPushButton:hover {
+            background-color: #8beb86;
+        }
+        QPushButton:pressed {
+            background-color: #108c0a;
+        }
+        """)
+
+    return msg.exec()
 
 
 def loading(next_window):
@@ -72,7 +113,8 @@ def loading(next_window):
             elif next_window == Global.NextWindow.UI_ABOUT:
                 from About.about import Ui_About
                 the_ui = Ui_About()
-        except Exception:
+        except Exception as e:
+            print(e)
             pass
         finally:
             loading_dialog.close()
@@ -80,7 +122,10 @@ def loading(next_window):
             QCoreApplication.sendPostedEvents(None, QEvent.Type.None_)
             QCoreApplication.processEvents()
             if the_ui is not None:
-                the_ui.exec()
+                try:
+                    the_ui.exec()
+                except Exception:
+                    pass
 
     # Use zero-delay timer to start loading immediately after UI refresh
     QTimer.singleShot(10, do_loading)

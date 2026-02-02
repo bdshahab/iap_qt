@@ -1,20 +1,33 @@
 from decimal import Decimal
+import json
+import re
 import time
 from PySide6.QtCore import (
-    QCoreApplication, QMetaObject, QTimer, QElapsedTimer)
-from PySide6.QtGui import QCursor, QDesktopServices
-from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLineEdit,
+    QCoreApplication, QMetaObject, QSize, QTimer, QElapsedTimer, Qt)
+from PySide6.QtGui import QCursor, QDesktopServices, QIcon
+from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton,
                                QSizePolicy, QVBoxLayout, QMessageBox)
+import requests
 
 import Global
-import Payment.addresses as addr
-from Payment.web_functions import *
+from Payment.iap_variables import APP_PRICE, TESTING, TOTAL_TIME
+from Payment.web_functions import KEY_DATA_SITE_2, KEY_DATA_SITE_3, data, format_with_separator, get_just_number, get_latest_key_data, get_with_fallback, verify_payment
+from tools import for_time
 from tools.Centralization import center_window
 from tools.dialogue import show_the_message
-from tools.for_images import *
-import tools.for_time as for_time
-from Payment.iap_variables import *
+from tools.for_images import show_image
+
+# import Global
+from Payment.web_functions import selected_coin_name, selected_coin_icon, selected_coin_address
 from Payment.language import custom_texts
+
+# from tools.Centralization import center_window
+# from tools.dialogue import show_the_message
+# from tools.for_images import *
+# import tools.for_time as for_time
+# from Payment.iap_variables import *
+# from Payment.language import custom_texts
+# import json
 
 
 first_clock_now = ""
@@ -38,32 +51,23 @@ class Ui_Payment(QDialog):
         self.h1.setObjectName(u"h1")
         self.icon = QLabel(self)
         self.icon.setObjectName(u"icon")
-
         self.h1.addWidget(self.icon)
-
         self.title = QLabel(self)
         self.title.setObjectName(u"title")
-
         self.h1.addWidget(self.title)
-
         self.time = QLabel(self)
         self.time.setObjectName(u"time")
         self.time.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
         self.time.setAlignment(Qt.AlignmentFlag.AlignRight |
                                Qt.AlignmentFlag.AlignTrailing | Qt.AlignmentFlag.AlignVCenter)
-
         self.h1.addWidget(self.time)
-
         self.verticalLayout.addLayout(self.h1)
-
         self.h2 = QHBoxLayout()
         self.h2.setObjectName(u"h2")
         self.l_address = QLabel(self)
         self.l_address.setObjectName(u"l_address")
         self.l_address.setMinimumSize(QSize(100, 0))
-
         self.h2.addWidget(self.l_address)
-
         self.input_address = QLineEdit(self)
         self.input_address.setObjectName(u"input_address")
         sizePolicy = QSizePolicy(
@@ -75,9 +79,7 @@ class Ui_Payment(QDialog):
         self.input_address.setSizePolicy(sizePolicy)
         self.input_address.setStyleSheet(u"")
         self.input_address.setReadOnly(True)
-
         self.h2.addWidget(self.input_address)
-
         self.copy_address = QPushButton(self)
         self.copy_address.setObjectName(u"copy_address")
         sizePolicy1 = QSizePolicy(
@@ -88,11 +90,8 @@ class Ui_Payment(QDialog):
             self.copy_address.sizePolicy().hasHeightForWidth())
         self.copy_address.setSizePolicy(sizePolicy1)
         self.copy_address.setMinimumSize(QSize(75, 0))
-
         self.h2.addWidget(self.copy_address)
-
         self.verticalLayout.addLayout(self.h2)
-
         self.h3 = QHBoxLayout()
         self.h3.setObjectName(u"h3")
         self.l_price = QLabel(self)
@@ -105,9 +104,7 @@ class Ui_Payment(QDialog):
             self.l_price.sizePolicy().hasHeightForWidth())
         self.l_price.setSizePolicy(sizePolicy2)
         self.l_price.setMinimumSize(QSize(100, 0))
-
         self.h3.addWidget(self.l_price)
-
         self.t_price = QLineEdit(self)
         self.t_price.setObjectName(u"t_price")
         sizePolicy.setHeightForWidth(
@@ -115,25 +112,18 @@ class Ui_Payment(QDialog):
         self.t_price.setSizePolicy(sizePolicy)
         self.t_price.setStyleSheet(u"")
         self.t_price.setReadOnly(True)
-
         self.h3.addWidget(self.t_price)
-
         self.copy_price = QPushButton(self)
         self.copy_price.setObjectName(u"copy_price")
         sizePolicy1.setHeightForWidth(
             self.copy_price.sizePolicy().hasHeightForWidth())
         self.copy_price.setSizePolicy(sizePolicy1)
         self.copy_price.setMinimumSize(QSize(75, 0))
-
         self.h3.addWidget(self.copy_price)
-
         self.verticalLayout.addLayout(self.h3)
-
         self.l_txid = QLabel(self)
         self.l_txid.setObjectName(u"l_txid")
-
         self.verticalLayout.addWidget(self.l_txid)
-
         self.h4 = QHBoxLayout()
         self.h4.setObjectName(u"h4")
         self.t_txid = QLineEdit(self)
@@ -143,20 +133,15 @@ class Ui_Payment(QDialog):
         self.t_txid.setSizePolicy(sizePolicy)
         self.t_txid.setStyleSheet(u"")
         self.t_txid.setReadOnly(True)
-
         self.h4.addWidget(self.t_txid)
-
         self.paste_txid = QPushButton(self)
         self.paste_txid.setObjectName(u"paste_txid")
         sizePolicy1.setHeightForWidth(
             self.paste_txid.sizePolicy().hasHeightForWidth())
         self.paste_txid.setSizePolicy(sizePolicy1)
         self.paste_txid.setMinimumSize(QSize(75, 0))
-
         self.h4.addWidget(self.paste_txid)
-
         self.verticalLayout.addLayout(self.h4)
-
         self.h_buttons = QHBoxLayout()
         self.h_buttons.setObjectName(u"h_buttons")
         self.b_back = QPushButton(self)
@@ -164,37 +149,27 @@ class Ui_Payment(QDialog):
         sizePolicy1.setHeightForWidth(
             self.b_back.sizePolicy().hasHeightForWidth())
         self.b_back.setSizePolicy(sizePolicy1)
-
         self.h_buttons.addWidget(self.b_back)
-
         self.b_help = QPushButton(self)
         self.b_help.setObjectName(u"b_help")
         sizePolicy1.setHeightForWidth(
             self.b_help.sizePolicy().hasHeightForWidth())
         self.b_help.setSizePolicy(sizePolicy1)
-
         self.h_buttons.addWidget(self.b_help)
-
         self.b_copyall = QPushButton(self)
         self.b_copyall.setObjectName(u"b_copyall")
         sizePolicy1.setHeightForWidth(
             self.b_copyall.sizePolicy().hasHeightForWidth())
         self.b_copyall.setSizePolicy(sizePolicy1)
-
         self.h_buttons.addWidget(self.b_copyall)
-
         self.b_buy = QPushButton(self)
         self.b_buy.setObjectName(u"b_buy")
         sizePolicy1.setHeightForWidth(
             self.b_buy.sizePolicy().hasHeightForWidth())
         self.b_buy.setSizePolicy(sizePolicy1)
-
         self.h_buttons.addWidget(self.b_buy)
-
         self.verticalLayout.addLayout(self.h_buttons)
-
         self.retranslateUi(self)
-
         QMetaObject.connectSlotsByName(self)
     # setupUi
 
@@ -340,6 +315,7 @@ class Ui_Payment(QDialog):
         self.msg = None
         self.timer = QTimer()
         self.elapsed_timer = QElapsedTimer()
+        # TODO
         self.base_time = TOTAL_TIME[0]
 
         self.start_time()
@@ -351,13 +327,12 @@ class Ui_Payment(QDialog):
 
     def set_images(self):
         img_size = int(Global.img_size * 0.8)
-        self.icon.setToolTip(str(Global.selected_payment))
+        self.icon.setToolTip(str(selected_coin_name[0]))
         self.setWindowIcon(QIcon("About/Photos/icon.png"))
         self.icon.setCursor(QCursor(Qt.PointingHandCursor))
-        self.icon.mousePressEvent = lambda _: self.search_term(
-            Global.selected_payment)
+        self.icon.mousePressEvent = lambda _: self.search_term(selected_coin_name[0])
         show_image([self.icon],
-                   [addr.cryptos.get(Global.selected_payment)],
+                   [selected_coin_icon[0]],
                    [(img_size, img_size)])
         show_image([self.copy_address],
                    ["Payment/Photos/copy.png"],
@@ -409,11 +384,6 @@ class Ui_Payment(QDialog):
         from tools.dialogue import loading
         loading(Global.NextWindow.UI_SELECT_COIN)
 
-    def get_datetime_data(self):
-        response = get_with_fallback(other_vars['DATE_TIME_SITE'])
-        the_result = response.text
-        return the_result
-
     def payment_successful(self):
         # stopping timer and closing window and showing confirmation
         self.reset_timer()
@@ -421,36 +391,52 @@ class Ui_Payment(QDialog):
         from tools.dialogue import loading
         loading(Global.NextWindow.UI_BOUGHT)
 
+    # TODO
     def goto_bought(self):
         txid = self.t_txid.text()
         if txid:
             try:
                 self.b_buy.setEnabled(False)
                 price = self.t_price.text()
-                datetime_data = self.get_datetime_data()
-                global first_clock_now, last_clock_now, first_date_now, last_date_now
-                last_clock_now = get_current_time(datetime_data)
-                last_date_now = get_current_date(datetime_data)
+                self.is_ok = get_latest_key_data(KEY_DATA_SITE_3)
+                if self.is_ok == -1: # The app is under repair.
+                    show_the_message(self.TITLE_HELP,self.MESSAGE_MAINTENANCE,QMessageBox.Critical,parent=self)
+                    return
+                elif self.is_ok == -2: # The app is currently free.
+                    self.close()
+                    from tools.dialogue import loading
+                    loading(Global.NextWindow.UI_BOUGHT)
+                    return
+                elif self.is_ok == False:
+                    show_the_message(self.TITLE_PAYMENT_VERSION,
+                                        self.MESSAGE_PAYMENT_VERSION, QMessageBox.Critical)
+                    self.close()
+                    from tools.dialogue import loading
+                    loading(Global.NextWindow.UI_ABOUT)
+                    return
 
-                if TESTING:
-                    print("Second Time format: " + last_clock_now)
-                    print("Second Date format: " + last_date_now)
-                    print(
-                        "Now we change some key elements to simulate real payment in testing mode")
-                    first_clock_now = "07:00:00"
-                    last_clock_now = "07:10:00"
-                    price = "0.00994753"
-                    first_date_now = "08 Feb 2022"
-                    last_date_now = "09 Feb 2022"
-                    print(f"first_clock_now: {first_clock_now}")
-                    print(f"last_clock_now: {last_clock_now}")
-                    print(f"price: {price}")
-                    print(f"first_date_now: {first_date_now}")
-                    print(f"last_date_now: {last_date_now}")
+                # Get Time
+                response = get_with_fallback(data[1])
+                the_result = response.text
+                pattern = data[2]
+                match = re.search(pattern, the_result)
+                global first_clock_now, last_clock_now, first_date_now, last_date_now
+                if match:
+                    last_clock_now = match.group(1)
+                else:
+                    raise Exception
+                # Get Date
+                pattern = data[3]
+                match = re.search(pattern, the_result)
+                if match:
+                    last_date_now = match.group(1)
+                else:
+                    raise Exception
                 try:
                     self.b_buy.setEnabled(True)
+                    the_address = self.input_address.text()
                     verify_result = verify_payment(
-                        Global.selected_payment, price, txid, first_date_now,
+                        Global.selected_payment, the_address, price, txid, first_date_now,
                         last_date_now, first_clock_now, last_clock_now)
                     if verify_result == "OK":
                         self.payment_successful()
@@ -518,7 +504,7 @@ class Ui_Payment(QDialog):
         return "".join(temp.split())
 
     def set_data(self):
-        self.input_address.setText(addr.addresses.get(Global.selected_payment))
+        self.input_address.setText(selected_coin_address[0])
 
     def start_time(self):
         self.timer = QTimer()
@@ -560,37 +546,75 @@ class Ui_Payment(QDialog):
             self.timer.start(1000)  # Update every 1000 ms
             if self.t_price.text() == "":
                 try:
-                    if not get_latest_key_data():
+                    self.is_ok = get_latest_key_data(KEY_DATA_SITE_2)
+                    if self.is_ok == -1:
+                        show_the_message(self.TITLE_HELP,self.MESSAGE_MAINTENANCE,QMessageBox.Critical,parent=self)
+                        self.close()
+                        return
+                    elif self.is_ok == -2: # if it's free
+                        self.close()
+                        from tools.dialogue import loading
+                        loading(Global.NextWindow.UI_BOUGHT)
+                        return
+                    elif self.is_ok == False:
                         show_the_message(self.TITLE_PAYMENT_VERSION,
-                                         self.MESSAGE_PAYMENT_VERSION, QMessageBox.Critical)
-                        self.close_window()
+                                            self.MESSAGE_PAYMENT_VERSION, QMessageBox.Critical)
+                        self.close()
                         from tools.dialogue import loading
                         loading(Global.NextWindow.UI_ABOUT)
                         return
                     else:
                         # change updated time
+                        TOTAL_TIME[0] = int(data[1])
                         self.base_time = TOTAL_TIME[0] + 1
+                        # We have to get price from json
+                        dic_price = json.loads(data[2])
+                        dic_minimum_price = json.loads(data[3])
                         # set price of the app
-                        the_price = APP_PRICE / \
-                            float(get_coin_current_price(
-                                Global.selected_payment))
-                        the_price = Decimal(the_price)
-                        # Automatically handles full decimal witout scientific (e)
-                        the_price = format(the_price, 'f')
-                        self.t_price.setText(format_with_separator(the_price, int(
-                            vars.price_decimals[Global.selected_payment]), ""))
-                        datetime_data = get_datetime_data()
-                        global first_clock_now, first_date_now
-                        first_clock_now = get_current_time(datetime_data)
-                        first_date_now = get_current_date(datetime_data)
+                        response = get_with_fallback(str(dic_price.get(Global.selected_payment)))
+                        the_result = response.text
+                        # Regex to find price
+                        pattern = data[4]
 
-                        if Decimal(the_price) < Decimal(MINIMUM_LIMIT_PRICE[Global.selected_payment]):
+                        match = re.search(pattern, the_result)
+                        if match:
+                            price_str = match.group(1)
+                            price = get_just_number(price_str)
+                            
+                            the_price = APP_PRICE / float(price)
+                            the_price = Decimal(the_price)
+                            # Automatically handles full decimal witout scientific (e)
+                            the_price = format(the_price, 'f')
+                            number_of_decimal_digits = len(dic_minimum_price.get(Global.selected_payment)) - 2
+                            self.t_price.setText(format_with_separator(the_price, number_of_decimal_digits, ""))
+                        else:
+                            raise Exception
+                        # Get Time
+                        response = get_with_fallback(data[5])
+                        the_result = response.text
+                        pattern = data[6]
+                        match = re.search(pattern, the_result)
+                        global first_clock_now, first_date_now
+                        if match:
+                            first_clock_now = match.group(1)
+                        else:
+                            raise Exception
+                        # Get Date
+                        pattern = data[7]
+                        match = re.search(pattern, the_result)
+                        if match:
+                            first_date_now = match.group(1)
+                        else:
+                            raise Exception
+                        # Get mimimum valid amount
+                        the_minimum = json.loads(data[3]).get(Global.selected_payment)
+                        if Decimal(the_price) < Decimal(the_minimum):
                             show_the_message(self.TITLE_ANOTHER_CURRENCY, self.MESSAGE_ANOTHER_CURRENCY, parent=self)
                             self.goto_select_coin()
                         elif TESTING:
                             print("First Time format: " + first_clock_now)
                             print("First Date format: " + first_date_now)
-                except requests.exceptions.ConnectionError:
+                except Exception:
                     show_the_message(
                         self.TITLE_LOST_CONNECTION, self.MESSAGE_LOST_CONNECTION, QMessageBox.Warning, parent=self)
                     self.goto_select_coin()

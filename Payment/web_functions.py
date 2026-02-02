@@ -1,12 +1,14 @@
-import re
+from datetime import datetime, timezone
+from decimal import Decimal
 import requests
-from Payment.addresses import *
-import Payment.iap_variables as vars
 
 import sys
 import os
 import socket
 import subprocess
+
+from Payment.iap_variables import TESTING
+# from Payment.payment import TESTING
 
 # this one depends on selected coin
 price_site_middle = ""
@@ -14,10 +16,36 @@ price_site_middle = ""
 GITHUB = "https://raw.githubusercontent.com/bdshahab/iap_qt/main/"
 DEFAULT_PRICE_KEYWORD = "default%20prices/"
 DEFAULT_PRICE_SUFFIX = ".txt"
-KEY_DATA_SITE = GITHUB + "key_data.txt"
+KEY_DATA_SITE_1 = GITHUB + "key_data_1.txt"
+KEY_DATA_SITE_2 = GITHUB + "key_data_2.txt"
+KEY_DATA_SITE_3 = GITHUB + "key_data_3.txt"
 # updatable key data
-IAP_VERSION = "8"
+IAP_VERSION = "9"
 
+data = []
+coin_icons = []
+all_address = []
+selected_coin_name = []
+selected_coin_icon = []
+selected_coin_address = []
+
+def get_latest_key_data(url):
+    response = get_with_fallback(url)
+    the_result = response.text
+    num = 1
+    data.clear()
+    for line in the_result.split("\n"):
+        data.append(line)
+        if num == 1:
+            if line != IAP_VERSION:
+                if line[0] == "-": # The app is under repair.
+                    return -1
+                elif line == "free": # The app is currently free.
+                    return -2
+                return False
+        num = num + 1
+    #update_urls()
+    return True
 
 def detect_system_proxy():
     proxies = {}
@@ -139,7 +167,6 @@ def detect_system_proxy():
 
     return None
 
-
 def is_port_open(port, timeout=0.2):
     try:
         s = socket.socket()
@@ -150,7 +177,6 @@ def is_port_open(port, timeout=0.2):
     except Exception:
         return False
 
-
 def detect_tor():
     if is_port_open(9150):
         return {"http": "socks5h://127.0.0.1:9150", "https": "socks5h://127.0.0.1:9150"}
@@ -158,8 +184,11 @@ def detect_tor():
         return {"http": "socks5h://127.0.0.1:9050", "https": "socks5h://127.0.0.1:9050"}
     return None
 
-
 def get_with_fallback(url, timeout=(5, 10)):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'application/json',
+    }
     proxy_chain = [
         None,
         detect_tor(),
@@ -169,7 +198,7 @@ def get_with_fallback(url, timeout=(5, 10)):
     last_exc = None
     for proxy in proxy_chain:
         try:
-            response = requests.get(url, proxies=proxy, timeout=timeout)
+            response = requests.get(url, proxies=proxy, timeout=timeout, headers=headers)
             response.raise_for_status()
             return response
         except Exception as e:
@@ -177,301 +206,14 @@ def get_with_fallback(url, timeout=(5, 10)):
 
     raise last_exc or ValueError("All connection attempts failed")
 
-
-def get_latest_key_data():
-    response = get_with_fallback(KEY_DATA_SITE)
-    the_result = response.text
-    num = 1
-    for line in the_result.split("\n"):
-        if num == 1:
-            if line != IAP_VERSION:
-                return False
-        elif num == 2:
-            vars.other_vars["DATE_TIME_SITE"] = line
-        elif num == 3:
-            vars.other_vars["TIME_REGEX"] = line
-        elif num == 4:
-            vars.other_vars["DATE_REGEX"] = line
-        elif num == 5:
-            vars.other_vars["DATE_REMOVE"] = line
-        elif num == 6:
-            vars.other_vars["DATE_REPLACE"] = line
-        elif num == 7:
-            vars.other_vars["CLOCK_REGEX"] = line
-        elif num == 8:
-            vars.other_vars["PRICE_SITE"] = line
-        elif num == 9:
-            vars.other_vars["PRICE_SITE_REGEX"] = line
-        elif num == 10:
-            vars.other_vars["PRICE_SITE_PREFIX"] = line
-        elif num == 11:
-            vars.other_vars["PRICE_SITE_SUFFIX"] = line
-        elif num == 12:
-            vars.other_vars["COIN_REGEX_1"] = line
-        elif num == 13:
-            vars.other_vars["COIN_REGEX_2"] = line
-        elif num == 14:
-            vars.other_vars["COIN_UPPER_LOWER"] = line
-        elif num == 15:
-            vars.other_vars["COIN_REGEX_SEPARATOR"] = line
-        elif num == 16:
-            vars.other_vars["ADDRESS_PREFIX"] = line
-        elif num == 17:
-            vars.other_vars["ADDRESS_SUFFIX"] = line
-        elif num == 18:
-            vars.other_vars["TXID_PREFIX"] = line
-        elif num == 19:
-            vars.other_vars["TXID_SUFFIX"] = line
-        elif num == 20:
-            vars.other_vars["MONEY_PREFIX"] = line
-        elif num == 21:
-            vars.other_vars["MONEY_SUFFIX"] = line
-        elif num == 22:
-            vars.other_vars["DATE_PREFIX"] = line
-        elif num == 23:
-            vars.other_vars["DATE_SUFFIX"] = line
-        elif num == 24:
-            vars.other_vars["VERIFY_SITE"] = line
-        elif num == 25:
-            vars.other_vars["VERIFY_SITE_SEPARATOR"] = line
-        elif num == 26:
-            vars.other_vars["PRICE_SEPARATOR"] = line
-        elif num == 27:
-            vars.other_vars[vars.the_coins[0]] = line
-        elif num == 28:
-            vars.other_vars[vars.the_coins[1]] = line
-        elif num == 29:
-            vars.other_vars[vars.the_coins[2]] = line
-        elif num == 30:
-            vars.other_vars[vars.the_coins[3]] = line
-        elif num == 31:
-            vars.other_vars[vars.the_coins[4]] = line
-        elif num == 32:
-            vars.other_vars[vars.the_coins[5]] = line
-        elif num == 33:
-            vars.other_vars[vars.the_coins[6]] = line
-        elif num == 34:
-            vars.other_vars[vars.the_coins[7]] = line
-        elif num == 35:
-            vars.other_vars[vars.the_coins[8]] = line
-        elif num == 36:
-            addresses[vars.the_coins[0]] = line
-        elif num == 37:
-            addresses[vars.the_coins[1]] = line
-        elif num == 38:
-            addresses[vars.the_coins[2]] = line
-        elif num == 39:
-            addresses[vars.the_coins[3]] = line
-        elif num == 40:
-            addresses[vars.the_coins[4]] = line
-        elif num == 41:
-            addresses[vars.the_coins[5]] = line
-        elif num == 42:
-            addresses[vars.the_coins[6]] = line
-        elif num == 43:
-            addresses[vars.the_coins[7]] = line
-        elif num == 44:
-            addresses[vars.the_coins[8]] = line
-        elif num == 45:
-            vars.price_decimals[vars.the_coins[0]] = line
-        elif num == 46:
-            vars.price_decimals[vars.the_coins[1]] = line
-        elif num == 47:
-            vars.price_decimals[vars.the_coins[2]] = line
-        elif num == 48:
-            vars.price_decimals[vars.the_coins[3]] = line
-        elif num == 49:
-            vars.price_decimals[vars.the_coins[4]] = line
-        elif num == 50:
-            vars.price_decimals[vars.the_coins[5]] = line
-        elif num == 51:
-            vars.price_decimals[vars.the_coins[6]] = line
-        elif num == 52:
-            vars.price_decimals[vars.the_coins[7]] = line
-        elif num == 53:
-            vars.price_decimals[vars.the_coins[8]] = line
-        elif num == 54:
-            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[0]] = line
-        elif num == 55:
-            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[1]] = line
-        elif num == 56:
-            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[2]] = line
-        elif num == 57:
-            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[3]] = line
-        elif num == 58:
-            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[4]] = line
-        elif num == 59:
-            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[5]] = line
-        elif num == 60:
-            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[6]] = line
-        elif num == 61:
-            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[7]] = line
-        elif num == 62:
-            vars.MINIMUM_LIMIT_PRICE[vars.the_coins[8]] = line
-        elif num == 63:
-            vars.TOTAL_TIME[0] = int(line)
-        num = num + 1
-    update_urls()
-    return True
-
-
 def get_just_number(text_num: str):
     text_num = text_num.replace(",", "")
     return text_num
-
 
 def get_coin_default_price(the_coin):
     the_url = GITHUB + DEFAULT_PRICE_KEYWORD + the_coin + DEFAULT_PRICE_SUFFIX
     response = get_with_fallback(the_url)
     return response.text  # Return the content as a string
-
-
-def get_coin_symbol(the_coin):
-    # Bitcoin Cash (BCH)
-    # bitcoin-cash
-    the_result = ""
-    if vars.other_vars["COIN_REGEX_1"] != "":
-        the_result = re.sub(vars.other_vars["COIN_REGEX_1"], '', the_coin)
-    # Remove the blank space at the beginning and end of the text
-    the_result = the_result.strip()
-    if vars.other_vars["COIN_REGEX_2"] != "":
-        the_result = the_result + \
-            re.sub(vars.other_vars["COIN_REGEX_2"], '', the_coin)
-    if " " in the_result:
-        the_result = the_result.replace(
-            " ", vars.other_vars["COIN_REGEX_SEPARATOR"])
-
-    if vars.other_vars["COIN_UPPER_LOWER"] == "lower":
-        the_result = the_result.lower()
-    elif vars.other_vars["COIN_UPPER_LOWER"] == "upper":
-        the_result = the_result.upper()
-    return the_result
-
-
-def get_current_price_from_the_url(the_url):
-    response = get_with_fallback(the_url)
-
-    # Search for the regex pattern in the HTML text
-    match = re.search(vars.other_vars["PRICE_SITE_REGEX"], response.text)
-    if match:
-        the_result = match.group(1)
-    else:
-        raise ValueError
-    return the_result
-
-
-def get_coin_current_price(the_coin):
-    global price_site_middle
-    price_site_middle = get_coin_symbol(the_coin)
-    coin_url_price = (vars.other_vars["PRICE_SITE"] + vars.other_vars["PRICE_SITE_PREFIX"] +
-                      price_site_middle + vars.other_vars["PRICE_SITE_SUFFIX"])
-    try:
-        current_price = get_current_price_from_the_url(coin_url_price)
-    except Exception:
-        current_price = get_coin_default_price(the_coin)
-    return get_just_number(current_price)
-
-
-def get_time():
-    the_result = ""
-    response = get_with_fallback(vars.other_vars["DATE_TIME_SITE"])
-    # Search for the regex pattern in the HTML text
-    match = re.search(vars.other_vars["TIME_REGEX"], response.text)
-    if match:
-        time = match.group(1)
-        the_result = time
-    return the_result
-
-
-def get_date():
-    the_result = ""
-    response = get_with_fallback(vars.other_vars["DATE_TIME_SITE"])
-    # Search for the regex pattern in the HTML text
-    match = re.search(vars.other_vars["DATE_REGEX"], response.text)
-    if match:
-        date = match.group(0)
-        the_result += date
-        the_result = the_result.replace(
-            vars.other_vars["DATE_REMOVE"], vars.other_vars["DATE_REPLACE"])
-    return the_result
-
-
-def get_coin_address(the_coin):
-    return addresses.get(the_coin)
-
-
-def get_verify_url_coin(the_coin):
-    return urls.get(the_coin)
-
-
-def get_txid_data(the_coin, the_txid):
-    the_url_txid = get_verify_url_coin(the_coin) + the_txid
-    response = get_with_fallback(the_url_txid)
-    the_result = response.text
-    return the_result
-
-
-def get_datetime_data():
-    response = get_with_fallback(vars.other_vars["DATE_TIME_SITE"])
-    the_result = response.text
-    return the_result
-
-
-def get_current_time(the_datetime_data):
-    match = re.search(vars.other_vars["TIME_REGEX"], the_datetime_data)
-    if match:
-        the_result = match.group(1)
-    else:
-        the_result = ""
-    return the_result
-
-
-def get_current_date(the_datetime_data):
-    date_pattern = re.compile(vars.other_vars["DATE_REGEX"])
-    match = date_pattern.search(the_datetime_data)
-    if match:
-        the_result = match.group(1)
-        the_result = the_result.replace(
-            vars.other_vars["DATE_REMOVE"], vars.other_vars["DATE_REPLACE"])
-    else:
-        the_result = ""
-    return the_result
-
-
-def check_address_in_txid_data(the_coin, the_txid_data):
-    address = get_coin_address(the_coin)
-    search_for_address = vars.other_vars["ADDRESS_PREFIX"] + \
-        address + vars.other_vars["ADDRESS_SUFFIX"]
-    return search_for_address in the_txid_data
-
-
-def check_txid_in_txid_data(the_txid, the_txid_data):
-    search_for_txid = vars.other_vars["TXID_PREFIX"] + \
-        the_txid + vars.other_vars["TXID_SUFFIX"]
-    return search_for_txid in the_txid_data
-
-
-def check_date_in_txid_data(the_date, the_txid_data):
-    search_for_date = vars.other_vars["DATE_PREFIX"] + \
-        the_date + vars.other_vars["DATE_SUFFIX"]
-    return search_for_date in the_txid_data
-
-
-def get_registered_clock(the_txid_data):
-    time_pattern = re.compile(vars.other_vars["CLOCK_REGEX"])
-    match = time_pattern.search(the_txid_data)
-    if match:
-        return match.group(1)
-    else:
-        return ""
-
-
-def check_price_in_txid_data(the_price, the_txid_data):
-    f"{float(the_price):,f}"
-    search_for_price = vars.other_vars["MONEY_PREFIX"] + \
-        the_price + vars.other_vars["MONEY_SUFFIX"]
-    return search_for_price in the_txid_data
-
 
 def get_time_in_seconds(the_text_time):
     parts = the_text_time.split(":")
@@ -480,20 +222,17 @@ def get_time_in_seconds(the_text_time):
     seconds = int(parts[2])
     return hours + minutes + seconds
 
-
 def is_time_in_duration(the_text_time, first_time, last_time):
     the_time = get_time_in_seconds(the_text_time)
     the_first_time = get_time_in_seconds(first_time)
     the_last_time = get_time_in_seconds(last_time)
     return the_first_time <= the_time <= the_last_time
 
-
 def format_with_separator(number, decimal_places=8, separator=','):
     number = float(str(number))
     formatted = f"{number:,.{decimal_places}f}"
     formatted = formatted.replace(',', separator)
     return formatted
-
 
 def format_with_separator_without_extra_zeros_in_right(number, decimal_places=8, separator=','):
     number = float(str(number))
@@ -506,48 +245,191 @@ def format_with_separator_without_extra_zeros_in_right(number, decimal_places=8,
         formatted = "0"
     return formatted
 
+def get_data_eth(the_api_url, the_api_key, the_txid):
+    params = {
+        data[6]: int(data[7]),  # Ethereum Mainnet
+        data[8]: data[9],
+        data[10]: data[11],
+        data[12]: the_txid,
+        data[13]: the_api_key
+    }
 
-def verify_payment(the_coin, the_price, the_txid, the_first_date, the_last_date, the_first_time, the_last_time):
+    resp = requests.get(the_api_url, params=params).json()
+
+    # ALWAYS validate
+    if not isinstance(resp.get(data[14]), dict):
+        raise RuntimeError(f"Etherscan error: {resp}")
+
+    tx = resp[data[14]]
+
+    to_address = tx[data[15]]
+    wei = int(tx[data[16]], 16)
+    input_amount = wei / Decimal("1000000000000000000")
+    input_amount = format(input_amount, ".18f")
+
+    block_hex = tx[data[17]]
+
+    params_block = {
+        data[18]: int(data[19]),
+        data[20]: data[21],
+        data[22]: data[23],
+        data[24]: block_hex,
+        data[25]: data[26],
+        data[27]: the_api_key
+    }
+
+    block = requests.get(the_api_url, params=params_block).json()[data[14]]
+    timestamp = int(block[data[28]], 16)
+
+    timestamp = int(block[data[28]], 16)
+    dt = datetime.fromtimestamp(timestamp, timezone.utc)
+    the_result = {
+        "DATE": dt.date(),
+        "TIME": dt.time(),
+        "INPUT_AMOUNT": input_amount,
+        "RECEIVERS": to_address,
+        }
+    return the_result
+
+# first_part_api_url: https://api.blockcypher.com/v1/
+# second_part_api_url: /main/txs/
+def get_data_btc_doge_ltc(first_part_api_url, second_part_api_url, the_coin, the_txid):
+    url = first_part_api_url + the_coin + second_part_api_url + the_txid
+    tx = requests.get(url, timeout=10).json()
+
+    # Date & Time
+    received_time = datetime.fromisoformat(
+        tx.get(data[34], data[35]).replace(data[36], data[37])
+    ).astimezone(timezone.utc)
+
+    # Input value handler (cross-coin) 31
+    def get_input_value(inp):
+        return inp.get(data[38], inp.get(data[39], int(data[40])))
+
+    total_input_sats = sum(get_input_value(i) for i in tx.get(data[41], []))
+    total_input_coin = total_input_sats / 1e8  # convert satoshi-like units
+
+    # Collect receivers safely
+    receivers = set()
+    for o in tx.get(data[42], []):
+        addresses = o.get(data[43])
+        if not addresses:  # handles None or empty
+            continue
+        for addr in addresses:
+            receivers.add(addr)
+    
+    receivers = list(receivers)[0]
+    the_time = str(received_time.time())
+    if "." in the_time:
+        the_time = the_time.split(".")[0]
+    the_result = {
+        "DATE":received_time.date(),
+        "TIME":the_time,
+        "INPUT_AMOUNT":total_input_coin,
+        "RECEIVERS":receivers,
+        }
+    
+    return the_result
+
+def verify_payment(the_coin, the_address, the_price, the_txid, the_first_date, the_last_date, the_first_time, the_last_time):
+    #!!!!!!!!!! TODO FBI
     try:
-        the_txid_data = get_txid_data(the_coin, the_txid)
-        the_time = get_registered_clock(the_txid_data)
-        if not (check_address_in_txid_data(the_coin, the_txid_data)):
-            return "ADDRESS"
-    except Exception:
-        return "ADDRESS"
-    try:
-        result_first_date = (check_date_in_txid_data(
-            the_first_date, the_txid_data))
-        result_last_date = (check_date_in_txid_data(
-            the_last_date, the_txid_data))
-        if not (result_first_date or result_last_date):
-            return "DATE"
-    except Exception:
-        return "DATE"
-    try:
-        if not (is_time_in_duration(the_time, the_first_time, the_last_time)):
-            return "TIME"
-    except Exception:
-        return "TIME"
-    try:
-        # First, we need to format the price to display properly on the TXID verification website.
-        for i in range(len(vars.the_coins)):
-            if the_coin == vars.the_coins[i]:
-                the_price = format_with_separator(
-                    the_price, vars.price_decimals[vars.the_coins[i]], vars.other_vars["PRICE_SEPARATOR"])
-                break
-        # Now we can check the price on the website
-        # with and without extra zeros
-        the_price_without_extra_zeros_in_right = format_with_separator_without_extra_zeros_in_right(
-            the_price, vars.price_decimals[vars.the_coins[i]], vars.other_vars["PRICE_SEPARATOR"])
-        if not (check_price_in_txid_data(the_price_without_extra_zeros_in_right, the_txid_data) or check_price_in_txid_data(the_price, the_txid_data)):
-            return "PRICE"
-    except Exception:
-        return "PRICE"
-    try:
-        if not (check_txid_in_txid_data(the_txid, the_txid_data)):
-            return "TXID"
+        if the_coin == "Ethereum (ETH)":
+            the_address = the_address.lower()
+            res = get_data_eth(data[4], data[5], the_txid)
+            the_date = str(res.get("DATE"))
+            the_time = str(res.get("TIME"))
+            #? FOR TESTING
+            if TESTING:
+                the_address = "0xfBF1f357A4cEeE90D4c7Bc5f32A222fD6065f15a".lower()
+                the_price = "0.084902310000000000"
+                the_first_date = "2021-10-07"
+                the_last_date = "2021-10-08"
+                the_first_time = "20:00:29"
+                the_last_time = "20:18:29"
+                #????????????? END OF TESTING ?????????????
+                print("-" * 20)
+                print(f"the_coin: {the_coin}")
+                print(f"the_address: {the_address}")
+                print(f"the_price: {the_price}")
+                print(f"the_txid: {the_txid}")
+                print(f"the_first_date: {the_first_date}")
+                print(f"the_last_date: {the_last_date}")
+                print(f"the_first_time: {the_first_time}")
+                print(f"the_last_time: {the_last_time}")
+                print("+" * 20)
+                print(f'res.get("RECEIVERS"): {res.get("RECEIVERS")}')
+                print(f'res.get("DATE"): {res.get("DATE")}')
+                print(f'res.get("TIME"): {res.get("TIME")}')
+                print(f'res.get("INPUT_AMOUNT"): {res.get("INPUT_AMOUNT")}')
+                print("*" * 20)
+            if res.get("RECEIVERS") != the_address:
+                return "ADDRESS"
+            elif (the_date != the_first_date) and (the_date != the_last_date):
+                return "DATE"
+            elif not is_time_in_duration(the_time, the_first_time, the_last_time):
+                return "TIME"
+            elif str(res.get("INPUT_AMOUNT")) != the_price:
+                return "PRICE"
+        else:
+            # Other crypto goes here
+            # 
+            if the_coin == "Bitcoin (BTC)":
+                the_coin = data[31]
+            elif the_coin == "Dogecoin (DOGE)":
+                the_coin = data[32]
+            elif the_coin == "Litecoin (LTC)":
+                the_coin = data[33]
+            res = get_data_btc_doge_ltc(data[29], data[30], the_coin, the_txid)
+            the_date = str(res.get("DATE"))
+            the_time = str(res.get("TIME"))
+            if TESTING:
+                print(f"the_coin: {the_coin}")
+                if the_coin == "btc":
+                    the_address = "1LQSzFZKE5vwiUS94toMG7r5M2nQ4X2muw"
+                    the_price = "0.00381949"
+                    the_first_date = "2019-10-02"
+                    the_last_date = "2019-10-03"
+                    the_first_time = "21:38:47"
+                    the_last_time = "21:58:47"
+                elif the_coin == "doge":
+                    the_address = "DK7LpDSQQKgVa8wSepytUisKFW9fmQ1vmR"
+                    the_price = "519.429489"
+                    the_first_date = "2021-05-06"
+                    the_last_date = "2021-05-07"
+                    the_first_time = "13:46:42"
+                    the_last_time = "14:06:42"
+                elif the_coin == "ltc":
+                    the_address = "LRQ6TBVXsEVPApbCY79bV1d9LR8E7JiuDd"
+                    the_price = "0.00994753"
+                    the_first_date = "2022-02-08"
+                    the_last_date = "2022-02-09"
+                    the_first_time = "06:54:57"
+                    the_last_time = "07:14:57"
+                #????????????? END OF TESTING ?????????????
+                print("-" * 20)
+                print(f"the_coin: {the_coin}")
+                print(f"the_address: {the_address}")
+                print(f"the_price: {the_price}")
+                print(f"the_txid: {the_txid}")
+                print(f"the_first_date: {the_first_date}")
+                print(f"the_last_date: {the_last_date}")
+                print(f"the_first_time: {the_first_time}")
+                print(f"the_last_time: {the_last_time}")
+                print("+" * 20)
+                print(f'res.get("RECEIVERS"): {res.get("RECEIVERS")}')
+                print(f'res.get("DATE"): {res.get("DATE")}')
+                print(f'res.get("TIME"): {res.get("TIME")}')
+                print(f'res.get("INPUT_AMOUNT"): {res.get("INPUT_AMOUNT")}')
+                print("*" * 20)
+            if res.get("RECEIVERS") != the_address:
+                return "ADDRESS"
+            elif (the_date != the_first_date) and (the_date != the_last_date):
+                return "DATE"
+            elif not is_time_in_duration(the_time, the_first_time, the_last_time):
+                return "TIME"
+            elif str(res.get("INPUT_AMOUNT")) != the_price:
+                return "PRICE"
     except Exception:
         return "TXID"
-
     return "OK"

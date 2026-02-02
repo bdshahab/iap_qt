@@ -1,5 +1,7 @@
 from enum import Enum
 
+from PySide6.QtGui import QDesktopServices
+
 
 class NextWindow(Enum):
     MAIN = 0
@@ -15,7 +17,14 @@ selected_payment = ""
 img_size = 0
 screen_width = 0
 screen_height = 0
+NUM_HOUR = 1
 
 def set_limit_on_size_of_widgets(factor, the_widget):
     the_limit = (screen_width // 2) - (img_size / 2)
     the_widget.setFixedWidth(the_limit * factor)
+
+def search_term(term):
+    """Open browser and search for the term"""
+    search_url = f"https://duckduckgo.com/?q={term}"
+    QDesktopServices.openUrl(search_url)
+

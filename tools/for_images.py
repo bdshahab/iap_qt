@@ -1,7 +1,7 @@
+import base64
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import QLabel, QPushButton
-
 
 def show_image(image_label_list, image_path_list, image_size_list, flip_modes=None):
     """
@@ -20,7 +20,23 @@ def show_image(image_label_list, image_path_list, image_size_list, flip_modes=No
     flip_modes = flip_modes or [None] * len(image_path_list)
 
     for i in range(len(image_path_list)):
-        pixmap = QPixmap(image_path_list[i])
+        data = image_path_list[i]
+
+        # Check if it's a base64 string (very basic check)
+        # common PNG/JPEG starts
+        if isinstance(data, str) and data.strip().startswith(('iVBOR', '/9j/')):
+            try:
+                image_bytes = base64.b64decode(data)
+                pixmap = QPixmap()
+                pixmap.loadFromData(image_bytes)
+            except Exception:
+                # "Error loading base64 image
+                image_label_list[i].setText("")
+                continue
+        else:
+            # Assume it's a normal file path
+            pixmap = QPixmap(data)
+
         if pixmap.isNull():
             image_label_list[i].setText("")
             continue
@@ -52,7 +68,6 @@ def show_image(image_label_list, image_path_list, image_size_list, flip_modes=No
             image_label_list[i].setIconSize(scaled_size)
         elif isinstance(image_label_list[i], QLabel):
             image_label_list[i].setPixmap(scaled_pixmap)
-
 
 def calculate_scaled_size(original_size, target_size):
     """Calculate scaled size maintaining aspect ratio (for button icons)."""
