@@ -1,13 +1,25 @@
 # In-app purchasing by cryptocurrency
 
-Published in Python and 2 Game Engines:
+⚠️ Project Status: Discontinued
+
+This project has been officially discontinued and is no longer under active development.
+
+Reasons for Discontinuation
+
+Many websites restrict or block automated access to their data, which limits the functionality of this application.
+
+Free tiers of APIs (Application Programming Interfaces) typically have strict limitations, making long-term sustainability difficult.
+
+Independent developers without a large user base have limited opportunities for generating revenue from such projects.
+
+From a practical and business perspective, advertisement-based models are more sustainable than in-app purchases for small-scale software projects.
+
+## old text is here just for previous users👇
+
 
 Python (PySide6): https://github.com/bdshahab/iap_qt
 
 Python (tkinter): https://github.com/bdshahab/iap_tkinter
-
-The game engine model is no longer being updated!
-For updates, please refer to the Python model!
 
 Defold: https://defold.com/assets/crypto_iap
 
@@ -55,5 +67,6 @@ Cryptocurrencies are free for everyone to use. Websites announcing the price of 
 For those cases where the price announcement site is down, a default price list has been placed on this GitHub site to be used. These default prices are in their folder (default prices) on this site.
 
 Key information is updated through a special file (key_data.txt) on this GitHub site so that possible problems can be solved quickly in the future, and there is no need to produce a new program and download it to the customer.
+
 
 
