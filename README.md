@@ -1,4 +1,4 @@
-### In-App Purchasing with Cryptocurrency
+## In-App Purchasing with Cryptocurrency
 ## ⚠️ Project Status: Discontinued
 
 This project has been officially discontinued and is no longer under active development.
@@ -93,3 +93,4 @@ This allowed quick updates and issue resolution without requiring users to downl
 ## 📖 Final Note
 
 Although this project is no longer maintained, the repository remains available for educational and reference purposes.
+
